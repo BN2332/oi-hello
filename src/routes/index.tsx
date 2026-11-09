@@ -84,6 +84,14 @@ function Home() {
 
   return (
     <main>
+      {introOpen && <div className="welcome-overlay" role="dialog" aria-modal="true" aria-label="Apresentação da Casa Montês">
+        <div className="welcome-backdrop" />
+        <div className="welcome-panel">
+          <div className="welcome-copy"><span className="welcome-kicker">SEJA BEM-VINDO À CASA MONTÊS</span><h2>Antes de entrar,<br /><em>venha conhecer nossa casa.</em></h2><p>Um convite para conhecer de perto quem prepara, recebe e compartilha o melhor de Minas.</p><div className="welcome-tabs">{introVideos.map((video) => <button key={video.id} className={introVideo === video.id ? "welcome-tab active" : "welcome-tab"} onClick={() => setIntroVideo(video.id)}>{video.label}</button>)}</div><button className="button button-dark welcome-enter" onClick={() => setIntroOpen(false)}>Entrar no site <ArrowRight size={16} /></button><a className="welcome-instagram" href="https://www.instagram.com/casamontesmg/" target="_blank" rel="noreferrer">Acompanhe também no Instagram <ArrowUpRight size={14} /></a></div>
+          <div className="welcome-video-wrap"><div className="welcome-video-frame"><iframe key={introVideo} src={`https://www.instagram.com/${introVideos.find((video) => video.id === introVideo)?.kind}/${introVideo}/embed/`} title="Apresentação em vídeo da Casa Montês" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen loading="eager" /></div><span className="welcome-video-note">VÍDEO PUBLICADO NO INSTAGRAM OFICIAL</span></div>
+          <button className="welcome-close" onClick={() => setIntroOpen(false)} aria-label="Fechar apresentação e entrar no site"><X size={20} /></button>
+        </div>
+      </div>}
       <div className="announcement"><span>☼</span> Um pedacinho de Minas no coração de Monte Sião <span className="announcement-dot">✳</span> <a href="#contato">Venha nos visitar <ArrowUpRight size={12} /></a></div>
       <header className="site-header">
         <a href="#inicio" className="brand" aria-label="Casa Montês, início">
