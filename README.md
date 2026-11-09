@@ -1,45 +1,24 @@
 # L. Ribeiro Imóveis
 
-Website institucional e catálogo demonstrativo da **L. Ribeiro Imóveis**, imobiliária localizada em Monte Sião – MG.
+Website institucional e vitrine imobiliária para a L. Ribeiro Imóveis, em Monte Sião - MG.
 
-## Funcionalidades
+## Informações
+- Endereço: R. do Tanque, 70 - Lj A - Centro, Monte Sião - MG, 37580-000
+- Telefone / WhatsApp: (35) 99144-1538
+- Site informado: http://www.lribeiroimoveis.imb.br/
+- [Google Maps](https://maps.google.com/?cid=4179794225959653962)
 
-- Página inicial com apresentação da imobiliária.
-- Catálogo demonstrativo de imóveis para compra e locação.
-- Filtros por finalidade, tipo, localização, faixa de preço e quartos.
-- Página/modal de detalhes com galeria de imagens.
-- Atalhos de contato pelo WhatsApp com mensagens contextualizadas.
-- Formulário de interesse que encaminha a conversa para o WhatsApp.
-- Endereço e acesso ao mapa.
-- Layout responsivo para desktop, tablet e celular.
+## Recursos
+- Página inicial responsiva com identidade visual elegante.
+- Busca por categoria, finalidade e palavra-chave.
+- Catálogo demonstrativo com favoritos e modal de detalhes.
+- Contato direto e formulário de interesse integrado ao WhatsApp.
+- Seções institucionais, endereço e localização.
 
-## Dados de contato
+## Importante
+Os imóveis e as fotografias do catálogo são exemplos visuais para demonstração do layout. Não representam anúncios confirmados nem disponibilidade real. Substituir pelos imóveis, valores, metragens e fotografias autorizados pela imobiliária antes da publicação comercial.
 
-- **Endereço:** R. do Tanque, 70 - Lj A - Centro, Monte Sião - MG, 37580-000
-- **WhatsApp:** (35) 99144-1538
-- **Site atual:** http://www.lribeiroimoveis.imb.br/
-
-## Executar localmente
-
-Requisitos: Bun instalado.
-
-```bash
-bun install
-bun run dev
-```
-
-Para gerar a versão de produção:
-
-```bash
-bun run build
-```
-
-## Importante sobre o catálogo
-
-Os imóveis, valores, características e fotografias do catálogo atual são **conteúdo fictício e ilustrativo**, incluído apenas para demonstrar o funcionamento e o visual do site. Eles não representam ofertas reais da imobiliária. Substitua esses dados pelos anúncios autorizados antes de publicar o site como catálogo comercial.
-
-## Estrutura principal
-
-- `src/routes/index.tsx`: página e funcionalidades do site.
-- `src/styles.css`: identidade visual, componentes e responsividade.
-- `public/`: arquivos públicos do projeto.
+## Desenvolvimento
+- `npm install`
+- `npm run dev`
+- `npm run build`
