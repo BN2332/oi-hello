@@ -41,7 +41,7 @@ function Home() {
     item.purpose === purpose &&
     (type === "Todos" || item.type === type) &&
     (bedrooms === "Qualquer" || item.beds >= Number(bedrooms)) &&
-    (priceRange === "Qualquer" || (priceRange === "ate300" && item.price <= 300000) || (priceRange === "300a600" && item.price > 300000 && item.price <= 600000) || (priceRange === "acima600" && item.price > 600000)) &&
+    (priceRange === "Qualquer" || (priceRange === "ate300" && item.price <= (purpose === "Alugar" ? 3000 : 300000)) || (priceRange === "300a600" && item.price > (purpose === "Alugar" ? 3000 : 300000) && item.price <= (purpose === "Alugar" ? 6000 : 600000)) || (priceRange === "acima600" && item.price > (purpose === "Alugar" ? 6000 : 600000))) &&
     (item.city.toLowerCase().includes(query.toLowerCase()) || item.title.toLowerCase().includes(query.toLowerCase()))
   ), [purpose, type, bedrooms, priceRange, query]);
   const selected = listings.find(item => item.id === active);
@@ -70,7 +70,8 @@ function Home() {
       <label>NEGÓCIO<select value={purpose} onChange={e=>setPurpose(e.target.value)}><option>Comprar</option><option>Alugar</option></select><ChevronDown size={14}/></label>
       <label>TIPO DE IMÓVEL<select value={type} onChange={e=>setType(e.target.value)}><option>Todos</option><option>Casa</option><option>Apartamento</option><option>Terreno</option></select><ChevronDown size={14}/></label>
       <label>LOCALIZAÇÃO<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Monte Sião ou nome do imóvel"/></label>
-      <label>FAIXA DE PREÇO<select value={priceRange} onChange={e=>setPriceRange(e.target.value)}><option value="Qualquer">Qualquer valor</option><option value="ate300">Até R$ 300 mil</option><option value="300a600">R$ 300–600 mil</option><option value="acima600">Acima de R$ 600 mil</option></select><ChevronDown size={14}/></label>\n      <label>QUARTOS<select value={bedrooms} onChange={e=>setBedrooms(e.target.value)}><option>Qualquer</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select><ChevronDown size={14}/></label>
+      <label>FAIXA DE PREÇO<select value={priceRange} onChange={e=>setPriceRange(e.target.value)}><option value="Qualquer">Qualquer valor</option><option value="ate300">{purpose === "Alugar" ? "Até R$ 3 mil/mês" : "Até R$ 300 mil"}</option><option value="300a600">{purpose === "Alugar" ? "R$ 3–6 mil/mês" : "R$ 300–600 mil"}</option><option value="acima600">{purpose === "Alugar" ? "Acima de R$ 6 mil/mês" : "Acima de R$ 600 mil"}</option></select><ChevronDown size={14}/></label>
+      <label>QUARTOS<select value={bedrooms} onChange={e=>setBedrooms(e.target.value)}><option>Qualquer</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select><ChevronDown size={14}/></label>
       <a href="#imoveis" className="search-button"><Search size={17}/> BUSCAR</a>
     </div></section>
 
