@@ -46,6 +46,13 @@ function Home() {
   const [notes, setNotes] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [lightbox, setLightbox] = useState<string | null>(null);
+  const [introOpen, setIntroOpen] = useState(true);
+  const [introVideo, setIntroVideo] = useState("Deh4scGhZL0");
+  const introVideos = [
+    { id: "Deh4scGhZL0", label: "Conheça a Casa Montês", kind: "reel" },
+    { id: "DeAFAY0B8Fi", label: "Mais um pouco da nossa casa", kind: "reel" },
+    { id: "DeKqkbBAa0f", label: "Uma visita especial", kind: "post" },
+  ];
 
   const filtered = useMemo(() => products.filter((p) =>
     (category === "Todos" || p.category === category) &&
