@@ -1,52 +1,59 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { ArrowRight, ArrowUpRight, Heart, Menu, MessageCircle, Search, X, MapPin, ShieldCheck, KeyRound, Home as HomeIcon } from "lucide-react";
+import { useState } from "react";
+import { ArrowUpRight, ArrowRight, Menu, X, Wrench, Gauge, ShieldCheck, Settings, Clock3, MapPin, Phone, MessageCircle, CheckCircle2, CarFront, ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: "Hilton Vieira | Imóveis em Monte Sião e região" },
-    { name: "description", content: "Encontre casas, apartamentos e terrenos em Monte Sião e região com atendimento próximo e transparente." },
+    { title: "Muller Car Center | Centro Automotivo" },
+    { name: "description", content: "Muller Car Center — manutenção, revisão e cuidado automotivo com atendimento de confiança." },
   ] }),
   component: Home,
 });
 
-const properties = [
-  { id: 1, type: "Casa", price: 485000, place: "Monte Sião · Bairro residencial", title: "Casa contemporânea com área externa", details: "3 quartos · 2 vagas · Jardim", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85", tag: "DESTAQUE" },
-  { id: 2, type: "Apartamento", price: 295000, place: "Monte Sião · Centro", title: "Praticidade perto de tudo", details: "2 quartos · 1 vaga · Varanda", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85", tag: "OPORTUNIDADE" },
-  { id: 3, type: "Terreno", price: 185000, place: "Monte Sião · Região", title: "Espaço para tirar seu projeto do papel", details: "360 m² · Boa topografia · Residencial", image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=85", tag: "PARA CONSTRUIR" },
+const services = [
+  { icon: Settings, n: "01", title: "Mecânica geral", desc: "Diagnóstico e manutenção dos principais sistemas do veículo, com atenção a cada detalhe." },
+  { icon: Gauge, n: "02", title: "Injeção eletrônica", desc: "Análise de falhas, leitura de parâmetros e diagnóstico do sistema eletrônico." },
+  { icon: ShieldCheck, n: "03", title: "Freios e suspensão", desc: "Inspeção e manutenção para preservar estabilidade, segurança e dirigibilidade." },
+  { icon: Wrench, n: "04", title: "Revisão preventiva", desc: "Verificações periódicas para identificar desgastes e evitar problemas inesperados." },
 ];
 
 function Home() {
-  const [type, setType] = useState("Todos");
-  const [price, setPrice] = useState("Todos");
-  const [query, setQuery] = useState("");
-  const [saved, setSaved] = useState<number[]>([]);
   const [menu, setMenu] = useState(false);
-  const [toast, setToast] = useState("");
-  const visible = useMemo(() => properties.filter(p =>
-    (type === "Todos" || p.type === type) &&
-    (price === "Todos" || (price === "Até R$ 300 mil" && p.price <= 300000) || (price === "R$ 300–600 mil" && p.price > 300000 && p.price <= 600000) || (price === "Acima de R$ 600 mil" && p.price > 600000)) &&
-    (p.title + p.place + p.type).toLowerCase().includes(query.toLowerCase())
-  ), [type, price, query]);
-  const money = (n: number) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
-  const contact = (subject = "Olá, Hilton! Vi seu site e gostaria de conversar sobre um imóvel em Monte Sião.") => {
-    const url = "https://wa.me/?text=" + encodeURIComponent(subject);
-    window.open(url, "_blank", "noopener,noreferrer");
+  const [service, setService] = useState("Mecânica geral");
+  const [name, setName] = useState("");
+  const [vehicle, setVehicle] = useState("");
+  const [message, setMessage] = useState("");
+  const whatsapp = (text: string) => window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank", "noopener,noreferrer");
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    whatsapp("Olá, Muller Car Center! Meu nome é " + (name || "—") + ". Veículo: " + (vehicle || "—") + ". Serviço desejado: " + service + ". " + message);
   };
-  const notify = (message: string) => { setToast(message); window.setTimeout(() => setToast(""), 2600); };
   return <main>
-    <div className="topline"><span>ATENDIMENTO EM MONTE SIÃO E REGIÃO</span><span>IMÓVEIS · NEGÓCIOS · CONFIANÇA</span></div>
+    <div className="topbar"><span><MapPin size={13}/> ATENDIMENTO AUTOMOTIVO</span><span>SEGURANÇA, CUIDADO E CONFIANÇA <i/></span></div>
     <header className="header">
-      <a className="brand" href="#inicio"><span className="brand-mark">HV</span><span><b>HILTON VIEIRA</b><small>IMÓVEIS & NEGÓCIOS</small></span></a>
-      <button className="menu-toggle" onClick={() => setMenu(!menu)} aria-label="Abrir menu">{menu ? <X/> : <Menu/>}</button>
-      <nav className={menu ? "nav open" : "nav"}><a href="#imoveis" onClick={() => setMenu(false)}>Imóveis</a><a href="#sobre" onClick={() => setMenu(false)}>Sobre</a><a href="#diferenciais" onClick={() => setMenu(false)}>Diferenciais</a><a className="nav-cta" href="#contato" onClick={() => setMenu(false)}>Fale comigo <ArrowUpRight size={14}/></a></nav>
+      <a className="brand" href="#inicio"><span className="brand-symbol"><Wrench size={24}/></span><span><b>MULLER <em>CAR CENTER</em></b><small>CENTRO AUTOMOTIVO</small></span></a>
+      <button className="menu-toggle" onClick={()=>setMenu(!menu)} aria-label="Abrir menu">{menu?<X/>:<Menu/>}</button>
+      <nav className={menu?"nav open":"nav"}><a href="#servicos" onClick={()=>setMenu(false)}>Serviços</a><a href="#sobre" onClick={()=>setMenu(false)}>A oficina</a><a href="#estrutura" onClick={()=>setMenu(false)}>Estrutura</a><a className="nav-cta" href="#orcamento" onClick={()=>setMenu(false)}>Agendar atendimento <ArrowUpRight size={15}/></a></nav>
     </header>
-    <section className="hero" id="inicio"><div className="hero-photo"/><div className="hero-shade"/><div className="hero-content"><div className="eyebrow"><i/> SEU PRÓXIMO CAPÍTULO COMEÇA AQUI</div><h1>O lugar certo<br/>para <em>chamar de seu.</em></h1><p>Encontre seu próximo imóvel em Monte Sião e região com orientação próxima, informações claras e tranquilidade em cada etapa.</p><div className="hero-actions"><a className="button button-light" href="#imoveis">Explorar imóveis <ArrowRight size={16}/></a><a className="hero-link" href="#contato">Vamos conversar <ArrowUpRight size={15}/></a></div></div><div className="hero-note">IMÓVEIS SELECIONADOS<br/>COM ATENÇÃO A CADA DETALHE</div><div className="hero-bottom"><span>MONTE SIÃO · MINAS GERAIS</span><span>ROLE PARA DESCOBRIR ↓</span></div></section>
-    <section className="search-strip"><div className="search-inner"><label>TIPO DE IMÓVEL<select value={type} onChange={e=>setType(e.target.value)}><option>Todos</option><option>Casa</option><option>Apartamento</option><option>Terreno</option></select></label><label>FAIXA DE VALOR<select value={price} onChange={e=>setPrice(e.target.value)}><option>Todos</option><option>Até R$ 300 mil</option><option>R$ 300–600 mil</option><option>Acima de R$ 600 mil</option></select></label><label className="search-label">BUSCAR<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Bairro, tipo ou imóvel..."/></label><a className="search-button" href="#imoveis"><Search size={16}/> Ver opções</a></div></section>
-    <section className="section listings" id="imoveis"><div className="section-head"><div><div className="eyebrow dark"><i/> UMA SELEÇÃO PARA VOCÊ</div><h2>Encontre um imóvel<br/><em>com a sua cara.</em></h2></div><p>Boas escolhas começam com boas possibilidades. Explore as opções demonstrativas e imagine o que vem pela frente.</p></div><div className="listing-grid">{visible.map(p=><article className="property-card" key={p.id}><div className="property-image"><img src={p.image} alt={p.title}/><span className="tag">{p.tag}</span><button className={saved.includes(p.id)?"heart active":"heart"} aria-label="Salvar imóvel" onClick={()=>setSaved(s=>s.includes(p.id)?s.filter(x=>x!==p.id):[...s,p.id])}><Heart size={17} fill={saved.includes(p.id)?"currentColor":"none"}/></button></div><div className="property-info"><div className="property-meta"><span>{p.type.toUpperCase()}</span><span>{p.place.toUpperCase()}</span></div><h3>{p.title}</h3><p className="details">{p.details}</p><div className="property-bottom"><strong>{money(p.price)}</strong><button className="arrow-btn" onClick={()=>contact("Olá, Hilton! Tenho interesse no imóvel: "+p.title+". Pode me passar mais informações?")} aria-label="Consultar imóvel"><ArrowUpRight/></button></div></div></article>)}</div>{visible.length===0&&<p className="no-results">Nenhum imóvel corresponde à busca. Tente outros filtros.</p>}<p className="demo-disclaimer">Imóveis, imagens e valores ilustrativos, apenas para demonstração. Não representam ofertas reais.</p></section>
-    <section className="about section" id="sobre"><div className="about-image"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=85" alt="Ambiente residencial contemporâneo"/><div className="image-caption">ESCOLHAS COM MAIS CONFIANÇA<strong>Seu imóvel.<br/>Seu momento.</strong></div></div><div className="about-copy"><div className="eyebrow dark"><i/> SOBRE O ATENDIMENTO</div><h2>Mais do que encontrar um imóvel. <em>É encontrar o seu lugar.</em></h2><p>Comprar, vender ou investir em um imóvel é uma decisão importante. A proposta de Hilton Vieira é acompanhar cada etapa com atenção, transparência e uma conversa sem complicação.</p><p>Com atendimento em Monte Sião e região, você tem apoio para entender as opções e avançar com mais segurança.</p><a className="button button-dark" href="#contato">Conheça meu atendimento <ArrowUpRight size={15}/></a></div></section>
-    <section className="section values" id="diferenciais"><div className="eyebrow dark"><i/> UMA EXPERIÊNCIA MAIS TRANQUILA</div><h2>Do primeiro contato<br/><em>até a decisão certa.</em></h2><div className="value-grid"><article><span>01</span><ShieldCheck/><h3>Atendimento próximo</h3><p>Conversa direta para entender o que você procura e respeitar seu momento.</p></article><article><span>02</span><HomeIcon/><h3>Opções com propósito</h3><p>Busca orientada pelo seu perfil, prioridades e planos para o futuro.</p></article><article><span>03</span><KeyRound/><h3>Transparência</h3><p>Informações claras para avaliar cada possibilidade com calma.</p></article></div></section>
-    <section className="contact" id="contato"><div className="contact-inner"><div className="eyebrow"><i/> VAMOS CONVERSAR?</div><h2>Seu próximo imóvel<br/>pode estar <em>mais perto.</em></h2><p>Conte um pouco do que você procura. Será um prazer ajudar você a encontrar boas possibilidades em Monte Sião e região.</p><button className="button button-light" onClick={()=>contact()}>Falar com Hilton pelo WhatsApp <MessageCircle size={16}/></button><small>Atendimento em Monte Sião – MG e região</small></div><div className="contact-decoration">HV</div></section>
-    <footer className="footer"><a className="brand" href="#inicio"><span className="brand-mark">HV</span><span><b>HILTON VIEIRA</b><small>IMÓVEIS & NEGÓCIOS</small></span></a><span>Monte Sião · Minas Gerais</span><span>© {new Date().getFullYear()} Hilton Vieira · Site demonstrativo</span></footer><button className="floating-whatsapp" onClick={()=>contact()} aria-label="Falar pelo WhatsApp"><MessageCircle/></button>{toast&&<div className="toast">{toast}</div>}
+    <section className="hero" id="inicio">
+      <img className="hero-img" src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=2200&q=90" alt="Mecânico trabalhando em um veículo na oficina"/>
+      <div className="hero-overlay"/>
+      <div className="hero-content"><div className="eyebrow"><i/> MULLER CAR CENTER · CENTRO AUTOMOTIVO</div><h1>Seu carro em boas mãos.<br/><em>Seu caminho tranquilo.</em></h1><p>Cuidado automotivo com atenção, transparência e compromisso em cada serviço. Conte com a Muller Car Center para cuidar do que leva você mais longe.</p><div className="hero-actions"><a className="btn btn-orange" href="#orcamento">Solicitar atendimento <ArrowUpRight size={17}/></a><a className="hero-more" href="#servicos">Conheça os serviços <ArrowRight size={16}/></a></div></div>
+      <div className="hero-stamp"><CarFront size={25}/><span>CUIDADO COMPLETO<br/>PARA SEU VEÍCULO</span></div>
+      <div className="hero-bottom"><span>MANUTENÇÃO · REVISÃO · DIAGNÓSTICO</span><span>QUALIDADE EM CADA DETALHE ↓</span></div>
+    </section>
+    <section className="trust-row"><div><ShieldCheck/><span><b>Segurança em primeiro lugar</b><small>Cuidado com o que importa</small></span></div><div><Wrench/><span><b>Serviços automotivos</b><small>Soluções para seu veículo</small></span></div><div><Clock3/><span><b>Atendimento próximo</b><small>Conversa clara e transparente</small></span></div></section>
+    <section className="section services" id="servicos"><div className="section-heading"><div><div className="eyebrow dark"><i/> O QUE FAZEMOS</div><h2>Seu veículo merece<br/><em>o cuidado certo.</em></h2></div><p>Da manutenção preventiva ao diagnóstico, nossa proposta é ajudar você a manter seu carro seguro e pronto para rodar.</p></div>
+      <div className="service-grid">{services.map(s=><article className="service-card" key={s.n}><div className="service-top"><span>{s.n}</span><s.icon size={27}/></div><h3>{s.title}</h3><p>{s.desc}</p><a href="#orcamento" onClick={()=>setService(s.title)}>Solicitar serviço <ChevronRight size={15}/></a></article>)}</div>
+    </section>
+    <section className="about" id="sobre"><div className="about-photo"><img src="https://images.unsplash.com/photo-1632823471565-1ecdf5c7c2e3?auto=format&fit=crop&w=1300&q=85" alt="Profissional realizando manutenção automotiva"/><div className="photo-label"><Wrench/><span>ATENÇÃO EM CADA DETALHE</span></div></div><div className="about-copy"><div className="eyebrow dark"><i/> MULLER CAR CENTER</div><h2>Mais confiança<br/>na hora de <em>cuidar do seu carro.</em></h2><p>Sabemos que seu veículo faz parte da sua rotina. Por isso, cada atendimento deve começar com escuta, explicação clara e atenção ao que realmente precisa ser feito.</p><p>Na Muller Car Center, você encontra uma oficina dedicada à manutenção e ao cuidado automotivo, com foco em um atendimento responsável do início ao fim.</p><a className="text-link" href="#orcamento">Converse com a equipe <ArrowUpRight size={16}/></a></div></section>
+    <section className="section workshop" id="estrutura"><div className="eyebrow dark"><i/> NOSSO COMPROMISSO</div><h2>Uma oficina que coloca<br/><em>seu cuidado em primeiro lugar.</em></h2><div className="work-grid"><div className="work-image"><img src="https://images.unsplash.com/photo-1613214150384-2f2c7f6a1d1e?auto=format&fit=crop&w=1200&q=85" alt="Área de serviço automotivo"/></div><div className="work-points"><div><b>01</b><span><strong>Diagnóstico com clareza</strong><small>Entenda o que seu veículo precisa antes de decidir.</small></span></div><div><b>02</b><span><strong>Atenção ao seu veículo</strong><small>Serviços realizados com cuidado e responsabilidade.</small></span></div><div><b>03</b><span><strong>Relacionamento de confiança</strong><small>Atendimento próximo, respeitoso e transparente.</small></span></div></div></div>
+    </section>
+    <section className="quote-section"><div className="quote-mark">“</div><p>Seu carro não é apenas um veículo.<br/>É parte de todos os caminhos que você percorre.</p><span>MULLER CAR CENTER · CENTRO AUTOMOTIVO</span></section>
+    <section className="booking" id="orcamento"><div className="booking-copy"><div className="eyebrow"><i/> FALE COM A MULLER CAR CENTER</div><h2>Vamos cuidar<br/>do seu <em>veículo?</em></h2><p>Preencha os dados e envie sua solicitação pelo WhatsApp. Nossa equipe poderá entender melhor o que você precisa.</p><div className="contact-detail"><MessageCircle/><span><b>Atendimento pelo WhatsApp</b><small>Envie sua solicitação diretamente</small></span></div><div className="contact-detail"><MapPin/><span><b>Localização da oficina</b><small>Endereço a confirmar</small></span></div></div>
+      <form className="booking-form" onSubmit={submit}><h3>Solicite um atendimento</h3><p>Conte um pouco sobre seu veículo.</p><label>SEU NOME<input value={name} onChange={e=>setName(e.target.value)} placeholder="Como podemos chamar você?"/></label><label>VEÍCULO<input value={vehicle} onChange={e=>setVehicle(e.target.value)} placeholder="Ex.: Onix 2020, Honda Civic..."/></label><label>SERVIÇO DESEJADO<select value={service} onChange={e=>setService(e.target.value)}>{services.map(s=><option key={s.n}>{s.title}</option>)}<option>Outro / Não sei identificar</option></select></label><label>DESCREVA O QUE ACONTECEU<textarea value={message} onChange={e=>setMessage(e.target.value)} placeholder="Conte brevemente o que seu carro precisa..." rows={3}/></label><button className="btn btn-orange" type="submit">Enviar pelo WhatsApp <ArrowUpRight size={17}/></button><small className="form-note">Ao enviar, uma conversa será aberta no WhatsApp para você revisar a mensagem.</small></form>
+    </section>
+    <footer className="footer"><a className="brand brand-footer" href="#inicio"><span className="brand-symbol"><Wrench size={22}/></span><span><b>MULLER <em>CAR CENTER</em></b><small>CENTRO AUTOMOTIVO</small></span></a><span>Manutenção e cuidado automotivo</span><span>© {new Date().getFullYear()} Muller Car Center · Site demonstrativo</span></footer>
+    <button className="floating-whatsapp" onClick={()=>whatsapp("Olá, Muller Car Center! Gostaria de informações sobre os serviços da oficina.")} aria-label="Chamar no WhatsApp"><MessageCircle/></button>
   </main>;
 }
