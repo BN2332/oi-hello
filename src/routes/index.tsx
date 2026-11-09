@@ -1,20 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowUpRight, ArrowRight, Menu, X, Wrench, Gauge, ShieldCheck, Settings, Clock3, MapPin, Phone, MessageCircle, CheckCircle2, CarFront, ChevronRight } from "lucide-react";
+import { ArrowUpRight, ArrowRight, Menu, X, Wrench, Gauge, ShieldCheck, Settings, Clock3, MapPin, MessageCircle, CheckCircle2, CarFront, ChevronRight, CircleDot, Zap, Cog, ClipboardCheck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: "Muller Car Center | Centro Automotivo" },
-    { name: "description", content: "Muller Car Center — manutenção, revisão e cuidado automotivo com atendimento de confiança." },
+    { title: "Muller Car Center | Oficina e Centro Automotivo" },
+    { name: "description", content: "Muller Car Center. Mecânica, diagnóstico e manutenção automotiva. Solicite um atendimento." },
   ] }),
   component: Home,
 });
 
 const services = [
-  { icon: Settings, n: "01", title: "Mecânica geral", desc: "Diagnóstico e manutenção dos principais sistemas do veículo, com atenção a cada detalhe." },
-  { icon: Gauge, n: "02", title: "Injeção eletrônica", desc: "Análise de falhas, leitura de parâmetros e diagnóstico do sistema eletrônico." },
-  { icon: ShieldCheck, n: "03", title: "Freios e suspensão", desc: "Inspeção e manutenção para preservar estabilidade, segurança e dirigibilidade." },
-  { icon: Wrench, n: "04", title: "Revisão preventiva", desc: "Verificações periódicas para identificar desgastes e evitar problemas inesperados." },
+  { icon: Cog, n: "01", title: "Mecânica geral", desc: "Cuidados com os principais sistemas do veículo, da avaliação ao reparo." },
+  { icon: Zap, n: "02", title: "Injeção eletrônica", desc: "Investigação de falhas e diagnóstico dos sistemas eletrônicos." },
+  { icon: CircleDot, n: "03", title: "Freios e suspensão", desc: "Inspeção de componentes essenciais para estabilidade e segurança." },
+  { icon: ClipboardCheck, n: "04", title: "Revisão preventiva", desc: "Acompanhamento dos itens de desgaste para evitar surpresas na estrada." },
 ];
 
 function Home() {
@@ -26,34 +26,42 @@ function Home() {
   const whatsapp = (text: string) => window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank", "noopener,noreferrer");
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    whatsapp("Olá, Muller Car Center! Meu nome é " + (name || "—") + ". Veículo: " + (vehicle || "—") + ". Serviço desejado: " + service + ". " + message);
+    whatsapp("Olá, Muller Car Center! Meu nome é " + (name || "—") + ". Veículo: " + (vehicle || "—") + ". Serviço: " + service + ". " + message);
   };
   return <main>
-    <div className="topbar"><span><MapPin size={13}/> ATENDIMENTO AUTOMOTIVO</span><span>SEGURANÇA, CUIDADO E CONFIANÇA <i/></span></div>
+    <div className="microbar"><span><i/> CENTRO AUTOMOTIVO</span><span>ATENÇÃO EM CADA DETALHE <b>·</b> CUIDADO EM CADA QUILÔMETRO</span></div>
     <header className="header">
-      <a className="brand" href="#inicio"><span className="brand-symbol"><Wrench size={24}/></span><span><b>MULLER <em>CAR CENTER</em></b><small>CENTRO AUTOMOTIVO</small></span></a>
+      <a className="brand" href="#inicio"><span className="brand-mark"><Wrench size={23}/></span><span className="brand-type"><b>MULLER<span>CAR CENTER</span></b><small>OFICINA AUTOMOTIVA</small></span></a>
       <button className="menu-toggle" onClick={()=>setMenu(!menu)} aria-label="Abrir menu">{menu?<X/>:<Menu/>}</button>
-      <nav className={menu?"nav open":"nav"}><a href="#servicos" onClick={()=>setMenu(false)}>Serviços</a><a href="#sobre" onClick={()=>setMenu(false)}>A oficina</a><a href="#estrutura" onClick={()=>setMenu(false)}>Estrutura</a><a className="nav-cta" href="#orcamento" onClick={()=>setMenu(false)}>Agendar atendimento <ArrowUpRight size={15}/></a></nav>
+      <nav className={menu?"nav open":"nav"}><a href="#servicos" onClick={()=>setMenu(false)}>SERVIÇOS</a><a href="#oficina" onClick={()=>setMenu(false)}>A OFICINA</a><a href="#processo" onClick={()=>setMenu(false)}>NOSSO JEITO</a><a className="nav-cta" href="#contato" onClick={()=>setMenu(false)}>FALAR COM A OFICINA <ArrowUpRight size={16}/></a></nav>
     </header>
+
     <section className="hero" id="inicio">
-      <img className="hero-img" src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=2200&q=90" alt="Mecânico trabalhando em um veículo na oficina"/>
-      <div className="hero-overlay"/>
-      <div className="hero-content"><div className="eyebrow"><i/> MULLER CAR CENTER · CENTRO AUTOMOTIVO</div><h1>Seu carro em boas mãos.<br/><em>Seu caminho tranquilo.</em></h1><p>Cuidado automotivo com atenção, transparência e compromisso em cada serviço. Conte com a Muller Car Center para cuidar do que leva você mais longe.</p><div className="hero-actions"><a className="btn btn-orange" href="#orcamento">Solicitar atendimento <ArrowUpRight size={17}/></a><a className="hero-more" href="#servicos">Conheça os serviços <ArrowRight size={16}/></a></div></div>
-      <div className="hero-stamp"><CarFront size={25}/><span>CUIDADO COMPLETO<br/>PARA SEU VEÍCULO</span></div>
-      <div className="hero-bottom"><span>MANUTENÇÃO · REVISÃO · DIAGNÓSTICO</span><span>QUALIDADE EM CADA DETALHE ↓</span></div>
+      <img className="hero-photo" src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=2200&q=90" alt="Detalhe de um veículo em manutenção automotiva"/>
+      <div className="hero-shade"/>
+      <div className="hero-grid">
+        <div className="hero-copy"><div className="kicker"><span/> MULLER CAR CENTER <b>—</b> CENTRO AUTOMOTIVO</div><h1>SEU CARRO.<br/><em>NOSSO FOCO.</em></h1><p>Manutenção automotiva com atenção de verdade. Entenda o que seu veículo precisa e tenha mais tranquilidade para seguir caminho.</p><div className="hero-buttons"><a className="button button-lime" href="#contato">SOLICITAR ATENDIMENTO <ArrowUpRight size={17}/></a><a className="under-link" href="#servicos">EXPLORAR SERVIÇOS <ArrowRight size={16}/></a></div></div>
+        <div className="hero-side"><span className="side-line"/><b>01 <small>/ 04</small></b><span>DIAGNÓSTICO<br/>MANUTENÇÃO<br/>CONFIANÇA</span></div>
+      </div>
+      <div className="hero-foot"><span>PRECISÃO NO CUIDADO. TRANQUILIDADE NA ESTRADA.</span><span>ROLE PARA DESCOBRIR <i>↓</i></span></div>
     </section>
-    <section className="trust-row"><div><ShieldCheck/><span><b>Segurança em primeiro lugar</b><small>Cuidado com o que importa</small></span></div><div><Wrench/><span><b>Serviços automotivos</b><small>Soluções para seu veículo</small></span></div><div><Clock3/><span><b>Atendimento próximo</b><small>Conversa clara e transparente</small></span></div></section>
-    <section className="section services" id="servicos"><div className="section-heading"><div><div className="eyebrow dark"><i/> O QUE FAZEMOS</div><h2>Seu veículo merece<br/><em>o cuidado certo.</em></h2></div><p>Da manutenção preventiva ao diagnóstico, nossa proposta é ajudar você a manter seu carro seguro e pronto para rodar.</p></div>
-      <div className="service-grid">{services.map(s=><article className="service-card" key={s.n}><div className="service-top"><span>{s.n}</span><s.icon size={27}/></div><h3>{s.title}</h3><p>{s.desc}</p><a href="#orcamento" onClick={()=>setService(s.title)}>Solicitar serviço <ChevronRight size={15}/></a></article>)}</div>
+
+    <div className="ticker"><div> MULLER CAR CENTER <b>✳</b> MECÂNICA GERAL <b>✳</b> DIAGNÓSTICO <b>✳</b> REVISÃO PREVENTIVA <b>✳</b> CUIDADO AUTOMOTIVO <b>✳</b> MULLER CAR CENTER <b>✳</b> MECÂNICA GERAL <b>✳</b> DIAGNÓSTICO <b>✳</b> REVISÃO PREVENTIVA <b>✳</b></div></div>
+
+    <section className="services section" id="servicos">
+      <div className="section-top"><div><div className="eyebrow"><span/> O QUE A GENTE FAZ</div><h2>MANUTENÇÃO<br/>SEM <em>ADIVINHAÇÃO.</em></h2></div><p>Seu carro dá sinais. Nosso trabalho é ajudar a entender o que está acontecendo e indicar o cuidado adequado.</p></div>
+      <div className="service-grid">{services.map(s=><article className="service-card" key={s.n}><div className="service-meta"><span>{s.n} / SERVIÇO</span><s.icon size={25}/></div><h3>{s.title}</h3><p>{s.desc}</p><a href="#contato" onClick={()=>setService(s.title)}>QUERO SABER MAIS <ArrowUpRight size={15}/></a></article>)}</div>
+      <div className="service-note"><ShieldCheck size={19}/><span>Não sabe exatamente o que seu carro precisa? <b>Converse com a oficina.</b> A gente começa entendendo o problema.</span></div>
     </section>
-    <section className="about" id="sobre"><div className="about-photo"><img src="https://images.unsplash.com/photo-1632823471565-1ecdf5c7c2e3?auto=format&fit=crop&w=1300&q=85" alt="Profissional realizando manutenção automotiva"/><div className="photo-label"><Wrench/><span>ATENÇÃO EM CADA DETALHE</span></div></div><div className="about-copy"><div className="eyebrow dark"><i/> MULLER CAR CENTER</div><h2>Mais confiança<br/>na hora de <em>cuidar do seu carro.</em></h2><p>Sabemos que seu veículo faz parte da sua rotina. Por isso, cada atendimento deve começar com escuta, explicação clara e atenção ao que realmente precisa ser feito.</p><p>Na Muller Car Center, você encontra uma oficina dedicada à manutenção e ao cuidado automotivo, com foco em um atendimento responsável do início ao fim.</p><a className="text-link" href="#orcamento">Converse com a equipe <ArrowUpRight size={16}/></a></div></section>
-    <section className="section workshop" id="estrutura"><div className="eyebrow dark"><i/> NOSSO COMPROMISSO</div><h2>Uma oficina que coloca<br/><em>seu cuidado em primeiro lugar.</em></h2><div className="work-grid"><div className="work-image"><img src="https://images.unsplash.com/photo-1613214150384-2f2c7f6a1d1e?auto=format&fit=crop&w=1200&q=85" alt="Área de serviço automotivo"/></div><div className="work-points"><div><b>01</b><span><strong>Diagnóstico com clareza</strong><small>Entenda o que seu veículo precisa antes de decidir.</small></span></div><div><b>02</b><span><strong>Atenção ao seu veículo</strong><small>Serviços realizados com cuidado e responsabilidade.</small></span></div><div><b>03</b><span><strong>Relacionamento de confiança</strong><small>Atendimento próximo, respeitoso e transparente.</small></span></div></div></div>
+
+    <section className="feature" id="oficina"><div className="feature-image"><img src="https://images.unsplash.com/photo-1632823471565-1ecdf5c7c2e3?auto=format&fit=crop&w=1400&q=90" alt="Serviço de manutenção em automóvel"/><div className="image-tag">MULLER <b>CAR CENTER</b></div></div><div className="feature-copy"><div className="eyebrow"><span/> MAIS DO QUE CONSERTAR</div><h2>TRANSPARÊNCIA<br/>TAMBÉM FAZ<br/><em>PARTE DO SERVIÇO.</em></h2><p>Levar o carro à oficina não precisa ser uma experiência confusa. Acreditamos em explicar, orientar e conversar com clareza sobre cada necessidade do veículo.</p><p>O objetivo é simples: que você saiba o que está sendo avaliado e possa decidir com segurança os próximos passos.</p><a className="lime-link" href="#contato">CONVERSE COM A EQUIPE <ArrowUpRight size={16}/></a></div></section>
+
+    <section className="process section" id="processo"><div className="eyebrow"><span/> NOSSO JEITO DE ATENDER</div><div className="process-head"><h2>CLAREZA DO<br/>COMEÇO AO <em>FIM.</em></h2><p>Um atendimento organizado começa ouvindo você. Veja como podemos dar o primeiro passo.</p></div><div className="steps"><div><b>01</b><span><strong>Você conta o que aconteceu</strong><small>Explique os sintomas, dúvidas ou o serviço que procura.</small></span></div><div><b>02</b><span><strong>Entendemos a necessidade</strong><small>A oficina conversa com você para orientar o próximo passo.</small></span></div><div><b>03</b><span><strong>Combinamos o atendimento</strong><small>Alinhe os detalhes diretamente com a equipe.</small></span></div></div></section>
+
+    <section className="contact" id="contato"><div className="contact-left"><div className="eyebrow"><span/> VAMOS CONVERSAR?</div><h2>SEU PRÓXIMO<br/>PASSO COMEÇA<br/><em>POR AQUI.</em></h2><p>Conte um pouco sobre seu veículo. Sua mensagem será preparada para você enviar pelo WhatsApp.</p><div className="contact-info"><MessageCircle/><span><b>FALE COM A MULLER CAR CENTER</b><small>Atendimento pelo WhatsApp</small></span></div><div className="contact-info"><MapPin/><span><b>ENDEREÇO DA OFICINA</b><small>Informação a confirmar</small></span></div></div>
+      <form className="contact-form" onSubmit={submit}><div className="form-heading"><span>01 — CONTATO</span><h3>Solicite um atendimento<span>.</span></h3><p>Preencha os campos abaixo para começar.</p></div><label>NOME<input value={name} onChange={e=>setName(e.target.value)} placeholder="Seu nome"/></label><label>MODELO DO VEÍCULO<input value={vehicle} onChange={e=>setVehicle(e.target.value)} placeholder="Ex.: Onix 2020"/></label><label>O QUE VOCÊ PRECISA?<select value={service} onChange={e=>setService(e.target.value)}>{services.map(s=><option key={s.n}>{s.title}</option>)}<option>Outro / preciso de orientação</option></select></label><label>CONTE UM POUCO MAIS<textarea value={message} onChange={e=>setMessage(e.target.value)} placeholder="Descreva o problema ou sua dúvida..." rows={3}/></label><button className="button button-lime" type="submit">CONTINUAR PELO WHATSAPP <ArrowUpRight size={17}/></button><small className="privacy-note">O WhatsApp será aberto com a mensagem preenchida para você revisar e enviar.</small></form>
     </section>
-    <section className="quote-section"><div className="quote-mark">“</div><p>Seu carro não é apenas um veículo.<br/>É parte de todos os caminhos que você percorre.</p><span>MULLER CAR CENTER · CENTRO AUTOMOTIVO</span></section>
-    <section className="booking" id="orcamento"><div className="booking-copy"><div className="eyebrow"><i/> FALE COM A MULLER CAR CENTER</div><h2>Vamos cuidar<br/>do seu <em>veículo?</em></h2><p>Preencha os dados e envie sua solicitação pelo WhatsApp. Nossa equipe poderá entender melhor o que você precisa.</p><div className="contact-detail"><MessageCircle/><span><b>Atendimento pelo WhatsApp</b><small>Envie sua solicitação diretamente</small></span></div><div className="contact-detail"><MapPin/><span><b>Localização da oficina</b><small>Endereço a confirmar</small></span></div></div>
-      <form className="booking-form" onSubmit={submit}><h3>Solicite um atendimento</h3><p>Conte um pouco sobre seu veículo.</p><label>SEU NOME<input value={name} onChange={e=>setName(e.target.value)} placeholder="Como podemos chamar você?"/></label><label>VEÍCULO<input value={vehicle} onChange={e=>setVehicle(e.target.value)} placeholder="Ex.: Onix 2020, Honda Civic..."/></label><label>SERVIÇO DESEJADO<select value={service} onChange={e=>setService(e.target.value)}>{services.map(s=><option key={s.n}>{s.title}</option>)}<option>Outro / Não sei identificar</option></select></label><label>DESCREVA O QUE ACONTECEU<textarea value={message} onChange={e=>setMessage(e.target.value)} placeholder="Conte brevemente o que seu carro precisa..." rows={3}/></label><button className="btn btn-orange" type="submit">Enviar pelo WhatsApp <ArrowUpRight size={17}/></button><small className="form-note">Ao enviar, uma conversa será aberta no WhatsApp para você revisar a mensagem.</small></form>
-    </section>
-    <footer className="footer"><a className="brand brand-footer" href="#inicio"><span className="brand-symbol"><Wrench size={22}/></span><span><b>MULLER <em>CAR CENTER</em></b><small>CENTRO AUTOMOTIVO</small></span></a><span>Manutenção e cuidado automotivo</span><span>© {new Date().getFullYear()} Muller Car Center · Site demonstrativo</span></footer>
-    <button className="floating-whatsapp" onClick={()=>whatsapp("Olá, Muller Car Center! Gostaria de informações sobre os serviços da oficina.")} aria-label="Chamar no WhatsApp"><MessageCircle/></button>
+    <footer className="footer"><a className="brand" href="#inicio"><span className="brand-mark"><Wrench size={21}/></span><span className="brand-type"><b>MULLER<span>CAR CENTER</span></b><small>OFICINA AUTOMOTIVA</small></span></a><span>MANUTENÇÃO · DIAGNÓSTICO · CUIDADO</span><small>© {new Date().getFullYear()} MULLER CAR CENTER · SITE DEMONSTRATIVO</small></footer>
+    <button className="whatsapp-float" onClick={()=>whatsapp("Olá, Muller Car Center! Gostaria de informações sobre os serviços da oficina.")} aria-label="Chamar no WhatsApp"><MessageCircle size={23}/></button>
   </main>;
 }
