@@ -1,184 +1,52 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import {
-  ArrowDown, ArrowRight, ArrowUpRight, Coffee, Heart, MapPin,
-  Menu as MenuIcon, Minus, Plus, Search, ShoppingBag, X,
-  Clock3, Phone, MessageCircle, Leaf, Wheat,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, Heart, Menu, MessageCircle, Search, X, MapPin, ShieldCheck, KeyRound, Home as HomeIcon } from "lucide-react";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Casa Montês | Restaurante & Cafeteria Mineira em Monte Sião" },
-      { name: "description", content: "Uma pausa com sabor de Minas. Conheça a Casa Montês, restaurante e cafeteria no coração de Monte Sião." },
-      { property: "og:title", content: "Casa Montês | O sabor de Minas em cada momento" },
-      { property: "og:description", content: "Restaurante & Cafeteria Mineira em Monte Sião, MG." },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () => ({ meta: [
+    { title: "Hilton Vieira | Imóveis em Monte Sião e região" },
+    { name: "description", content: "Encontre casas, apartamentos e terrenos em Monte Sião e região com atendimento próximo e transparente." },
+  ] }),
   component: Home,
 });
 
-const whatsapp = "5535933003516";
-const address = "Rua do Mercado, 757 - Centro, Monte Sião - MG, 37580-000";
-const categories = ["Todos", "Cafés", "Quitandas", "Salgados", "Doces"];
-const products = [
-  { id: 1, name: "Pão de queijo mineiro", category: "Quitandas", description: "Casquinha dourada, miolo macio e aquele queijo que abraça.", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900&q=85", tag: "Queridinho" },
-  { id: 2, name: "Café coado na hora", category: "Cafés", description: "Aroma de café passado com calma, do jeitinho mineiro.", image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&q=85", tag: "Da casa" },
-  { id: 3, name: "Bolo caseiro", category: "Doces", description: "Fatia fofinha para acompanhar sua pausa.", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900&q=85", tag: "Feito com carinho" },
-  { id: 4, name: "Café com leite", category: "Cafés", description: "Cremoso, quentinho e perfeito para começar o dia.", image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=900&q=85" },
-  { id: 5, name: "Salgado da vitrine", category: "Salgados", description: "Uma opção saborosa para matar a fome a qualquer hora.", image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=900&q=85" },
-  { id: 6, name: "Doce de Minas", category: "Doces", description: "Um carinho doce para fechar sua experiência.", image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=900&q=85" },
-];
-const gallery = [
-  { id: "DeKqkbBAa0f", kind: "p", title: "Um registro da Casa Montês" },
-  { id: "Deh4scGhZL0", kind: "reel", title: "Conheça nosso espaço" },
-  { id: "DeAFAY0B8Fi", kind: "reel", title: "Um pouco da nossa experiência" },
+const properties = [
+  { id: 1, type: "Casa", price: 485000, place: "Monte Sião · Bairro residencial", title: "Casa contemporânea com área externa", details: "3 quartos · 2 vagas · Jardim", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85", tag: "DESTAQUE" },
+  { id: 2, type: "Apartamento", price: 295000, place: "Monte Sião · Centro", title: "Praticidade perto de tudo", details: "2 quartos · 1 vaga · Varanda", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85", tag: "OPORTUNIDADE" },
+  { id: 3, type: "Terreno", price: 185000, place: "Monte Sião · Região", title: "Espaço para tirar seu projeto do papel", details: "360 m² · Boa topografia · Residencial", image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=85", tag: "PARA CONSTRUIR" },
 ];
 
 function Home() {
-  const [category, setCategory] = useState("Todos");
+  const [type, setType] = useState("Todos");
+  const [price, setPrice] = useState("Todos");
   const [query, setQuery] = useState("");
-  const [cart, setCart] = useState<Record<number, number>>({});
-  const [cartOpen, setCartOpen] = useState(false);
-  const [customer, setCustomer] = useState("");
-  const [notes, setNotes] = useState("");
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [lightbox, setLightbox] = useState<string | null>(null);
-  const [introOpen, setIntroOpen] = useState(true);
-  const [introVideo, setIntroVideo] = useState("Deh4scGhZL0");
-  const introVideos = [
-    { id: "Deh4scGhZL0", label: "Conheça a Casa Montês", kind: "reel" },
-    { id: "DeAFAY0B8Fi", label: "Mais um pouco da nossa casa", kind: "reel" },
-    { id: "DeKqkbBAa0f", label: "Uma visita especial", kind: "post" },
-  ];
-
-  const filtered = useMemo(() => products.filter((p) =>
-    (category === "Todos" || p.category === category) &&
-    (p.name + " " + p.description).toLowerCase().includes(query.toLowerCase())
-  ), [category, query]);
-  const count = Object.values(cart).reduce((a, b) => a + b, 0);
-  const selected = products.filter((p) => cart[p.id]);
-  const add = (id: number) => setCart((old) => ({ ...old, [id]: (old[id] || 0) + 1 }));
-  const change = (id: number, amount: number) => setCart((old) => {
-    const next = { ...old, [id]: Math.max(0, (old[id] || 0) + amount) };
-    if (!next[id]) delete next[id];
-    return next;
-  });
-  const order = () => {
-    if (!selected.length) return;
-    const lines = selected.map((p) => `• ${cart[p.id]}x ${p.name}`).join("%0A");
-    const message = [
-      "Olá, Casa Montês! Gostaria de consultar disponibilidade e valores:",
-      "",
-      ...selected.map((p) => `${cart[p.id]}x ${p.name}`),
-      "",
-      `Nome: ${customer.trim() || "Não informado"}`,
-      `Observações: ${notes.trim() || "Nenhuma"}`,
-      "",
-      "Podem confirmar os valores e as opções disponíveis?",
-    ].join("\n");
-    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+  const [saved, setSaved] = useState<number[]>([]);
+  const [menu, setMenu] = useState(false);
+  const [toast, setToast] = useState("");
+  const visible = useMemo(() => properties.filter(p =>
+    (type === "Todos" || p.type === type) &&
+    (price === "Todos" || (price === "Até R$ 300 mil" && p.price <= 300000) || (price === "R$ 300–600 mil" && p.price > 300000 && p.price <= 600000) || (price === "Acima de R$ 600 mil" && p.price > 600000)) &&
+    (p.title + p.place + p.type).toLowerCase().includes(query.toLowerCase())
+  ), [type, price, query]);
+  const money = (n: number) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+  const contact = (subject = "Olá, Hilton! Vi seu site e gostaria de conversar sobre um imóvel em Monte Sião.") => {
+    const url = "https://wa.me/?text=" + encodeURIComponent(subject);
+    window.open(url, "_blank", "noopener,noreferrer");
   };
-
-  return (
-    <main>
-      {introOpen && <div className="welcome-overlay" role="dialog" aria-modal="true" aria-label="Apresentação da Casa Montês">
-        <div className="welcome-backdrop" />
-        <div className="welcome-panel">
-          <div className="welcome-copy"><span className="welcome-kicker">SEJA BEM-VINDO À CASA MONTÊS</span><h2>Antes de entrar,<br /><em>venha conhecer nossa casa.</em></h2><p>Um convite para conhecer de perto quem prepara, recebe e compartilha o melhor de Minas.</p><div className="welcome-tabs">{introVideos.map((video) => <button key={video.id} className={introVideo === video.id ? "welcome-tab active" : "welcome-tab"} onClick={() => setIntroVideo(video.id)}>{video.label}</button>)}</div><button className="button button-dark welcome-enter" onClick={() => setIntroOpen(false)}>Entrar no site <ArrowRight size={16} /></button><a className="welcome-instagram" href="https://www.instagram.com/casamontesmg/" target="_blank" rel="noreferrer">Acompanhe também no Instagram <ArrowUpRight size={14} /></a></div>
-          <div className="welcome-video-wrap"><div className="welcome-video-frame"><iframe key={introVideo} src={`https://www.instagram.com/${introVideos.find((video) => video.id === introVideo)?.kind}/${introVideo}/embed/`} title="Apresentação em vídeo da Casa Montês" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen loading="eager" /></div><span className="welcome-video-note">VÍDEO PUBLICADO NO INSTAGRAM OFICIAL</span></div>
-          <button className="welcome-close" onClick={() => setIntroOpen(false)} aria-label="Fechar apresentação e entrar no site"><X size={20} /></button>
-        </div>
-      </div>}
-      <div className="announcement"><span>☼</span> Um pedacinho de Minas no coração de Monte Sião <span className="announcement-dot">✳</span> <a href="#contato">Venha nos visitar <ArrowUpRight size={12} /></a></div>
-      <header className="site-header">
-        <a href="#inicio" className="brand" aria-label="Casa Montês, início">
-          <span className="brand-mark"><Coffee size={23} strokeWidth={1.5} /></span>
-          <span className="brand-copy"><strong>casa montês</strong><small>RESTAURANTE & CAFETERIA</small></span>
-        </a>
-        <nav className={mobileOpen ? "main-nav nav-open" : "main-nav"}>
-          <a href="#historia" onClick={() => setMobileOpen(false)}>Nossa casa</a>
-          <a href="#cardapio" onClick={() => setMobileOpen(false)}>Cardápio</a>
-          <a href="#ambiente" onClick={() => setMobileOpen(false)}>Ambiente</a>
-          <a href="#contato" onClick={() => setMobileOpen(false)}>Contato</a>
-        </nav>
-        <div className="header-actions">
-          <button className="cart-trigger" onClick={() => setCartOpen(true)} aria-label="Abrir pedido"><ShoppingBag size={17} /><span>Meu pedido</span>{count > 0 && <b>{count}</b>}</button>
-          <button className="mobile-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Abrir menu">{mobileOpen ? <X /> : <MenuIcon />}</button>
-        </div>
-      </header>
-
-      <section className="hero" id="inicio">
-        <div className="hero-photo" />
-        <div className="hero-shade" />
-        <div className="hero-content">
-          <div className="eyebrow light"><span /> SABOR, AFETO E TRADIÇÃO MINEIRA</div>
-          <h1>O sabor de Minas<br /><em>em cada momento.</em></h1>
-          <p>Tem café passado na hora, conversa boa e aquele acolhimento que só Minas sabe oferecer.</p>
-          <div className="hero-buttons"><a className="button button-cream" href="#cardapio">Conheça nosso cardápio <ArrowRight size={16} /></a><a className="text-link light-link" href="#historia">Descubra nossa casa <ArrowDown size={15} /></a></div>
-          <div className="hero-note"><span className="note-line" /><span>FEITO COM CALMA. SERVIDO COM CARINHO.</span></div>
-        </div>
-        <div className="hero-stamp"><span>☼</span><small>O JEITO<br />MINEIRO DE<br />RECEBER</small></div>
-        <div className="hero-bottom"><span>MONTE SIÃO · MINAS GERAIS</span><span>↓ ROLE PARA DESCOBRIR</span></div>
-      </section>
-
-      <section className="intro section-pad" id="historia">
-        <div className="intro-image-wrap intro-instagram"><iframe src="https://www.instagram.com/p/DeKqkbBAa0f/embed/" title="Publicação real da Casa Montês no Instagram" loading="lazy" /><div className="image-caption"><span>☼</span><div><b>Um lugar para ficar</b><small>e aproveitar o momento.</small></div></div></div>
-        <div className="intro-copy">
-          <div className="eyebrow"><span /> PRAZER, SOMOS A CASA MONTÊS</div>
-          <h2>Mais que uma refeição.<br /><em>Um jeito de se sentir em casa.</em></h2>
-          <p className="lead">A Casa Montês nasceu para celebrar o que Minas tem de melhor: a mesa farta, o café quentinho e a alegria de receber bem.</p>
-          <p>Um espaço para começar o dia sem pressa, encontrar quem a gente gosta ou simplesmente fazer uma pausa gostosa no meio da rotina. Chegue como estiver. A casa é sua.</p>
-          <a className="under-link" href="#contato">Venha conhecer <ArrowUpRight size={16} /></a>
-          <div className="signature">Casa Montês <span>— com carinho, de Minas.</span></div>
-        </div>
-      </section>
-
-      <section className="menu-section section-pad" id="cardapio">
-        <div className="section-heading">
-          <div><div className="eyebrow"><span /> UM CONVITE À MESA</div><h2>Coisas boas pedem<br /><em>um tempo a mais.</em></h2></div>
-          <p>Escolhas preparadas para acompanhar seus melhores momentos. Consulte a equipe sobre disponibilidade e valores do dia.</p>
-        </div>
-        <div className="menu-toolbar">
-          <div className="category-tabs">{categories.map((c) => <button key={c} className={category === c ? "category-tab active" : "category-tab"} onClick={() => setCategory(c)}>{c}</button>)}</div>
-          <label className="search-box"><Search size={16} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Buscar no cardápio" /><kbd>⌕</kbd></label>
-        </div>
-        <div className="product-grid">
-          {filtered.map((p) => <article className="product-card" key={p.id}>
-            <div className={`product-image product-art product-art-${p.category.toLowerCase()}`}><div className="product-art-mark">{p.category === "Cafés" ? <Coffee size={34} /> : p.category === "Quitandas" ? <Wheat size={34} /> : <Heart size={32} />}</div><span className="product-art-label">SABOR DE MINAS</span>{p.tag && <span className="product-tag">{p.tag}</span>}<button className="add-product" onClick={() => add(p.id)} aria-label={`Adicionar ${p.name}`}><Plus size={19} /></button></div>
-            <div className="product-info"><div className="product-meta">{p.category}<span>VALOR A CONSULTAR</span></div><h3>{p.name}</h3><p>{p.description}</p></div>
-          </article>)}
-          {filtered.length === 0 && <div className="empty-results">Não encontramos esse item. Tente outra busca.</div>}
-        </div>
-        <div className="menu-foot"><span>Os itens e a disponibilidade podem variar ao longo do dia.</span><button className="button button-dark" onClick={() => setCartOpen(true)}>Montar meu pedido <ShoppingBag size={16} /> {count > 0 && <b>{count}</b>}</button></div>
-      </section>
-
-      <section className="quote-band"><div className="quote-mark">“</div><p>Tem coisa que não se explica.<br /><em>A gente sente no primeiro café.</em></p><span>UM POUCO DE MINAS, UM TANTO DE ACONCHEGO.</span></section>
-
-      <section className="experience section-pad" id="ambiente">
-        <div className="section-heading experience-heading"><div><div className="eyebrow"><span /> UM ESPAÇO PARA DESACELERAR</div><h2>Entre, escolha seu canto<br /><em>e fique à vontade.</em></h2></div><p>Da primeira xícara ao último pedacinho, queremos que cada visita tenha gosto de quero mais.</p></div>
-        <div className="instagram-gallery">{gallery.map((item, i) => <article className="instagram-card" key={item.id}><div className="instagram-card-top"><span>CASA MONTÊS</span><small>0{i + 1}</small></div><iframe src={`https://www.instagram.com/${item.kind}/${item.id}/embed/`} title={item.title} loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen /><a href={`https://www.instagram.com/${item.kind}/${item.id}/`} target="_blank" rel="noreferrer">{item.title} <ArrowUpRight size={14} /></a></article>)}</div>
-      </section>
-
-      <section className="values-strip"><div><Coffee /><b>Café com carinho</b><span>Uma pausa que faz bem.</span></div><div><Wheat /><b>Sabor de verdade</b><span>Tradição em cada detalhe.</span></div><div><Heart /><b>Acolhimento mineiro</b><span>Receber bem é nossa essência.</span></div><div><Leaf /><b>Momentos especiais</b><span>Para estar junto e aproveitar.</span></div></section>
-
-      <section className="visit-section section-pad" id="contato">
-        <div className="visit-copy"><div className="eyebrow light"><span /> VAI SER UM PRAZER RECEBER VOCÊ</div><h2>Seu lugar à mesa<br /><em>está esperando.</em></h2><p>Estamos no coração de Monte Sião. Passe para um café, uma boa conversa e um momento só seu.</p>
-          <div className="visit-details"><div><MapPin /><span><b>Nosso endereço</b>{address}</span></div><div><Phone /><span><b>Telefone</b>(35) 93300-3516</span></div><div><Clock3 /><span><b>Funcionamento</b>Consulte os horários pelo WhatsApp.</span></div></div>
-          <div className="visit-buttons"><a className="button button-cream" href="https://wa.me/5535933003516" target="_blank" rel="noreferrer"><MessageCircle size={16} /> Fale pelo WhatsApp</a><a className="text-link light-link" href="https://maps.google.com/?cid=133884333489536509" target="_blank" rel="noreferrer">Como chegar <ArrowUpRight size={15} /></a></div>
-        </div>
-        <div className="map-card"><iframe title="Localização da Casa Montês em Monte Sião" src="https://www.google.com/maps?q=Rua%20do%20Mercado%2C%20757%2C%20Monte%20Si%C3%A3o%20MG&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" /><a href="https://maps.google.com/?cid=133884333489536509" target="_blank" rel="noreferrer"><MapPin size={15} /> Abrir no Google Maps <ArrowUpRight size={14} /></a></div>
-      </section>
-
-      <footer className="footer"><a href="#inicio" className="brand footer-brand"><span className="brand-mark"><Coffee size={22} /></span><span className="brand-copy"><strong>casa montês</strong><small>RESTAURANTE & CAFETERIA</small></span></a><span className="footer-line">O sabor de Minas em cada momento.</span><div className="footer-right"><a href="https://wa.me/5535933003516" target="_blank" rel="noreferrer"><MessageCircle size={17} /> WhatsApp</a><span>© {new Date().getFullYear()} Casa Montês</span></div></footer>
-
-      <a className="floating-whatsapp" href="https://wa.me/5535933003516" target="_blank" rel="noreferrer" aria-label="Falar com a Casa Montês pelo WhatsApp"><MessageCircle size={22} /></a>
-
-      {cartOpen && <div className="drawer-backdrop" onClick={() => setCartOpen(false)}><aside className="cart-drawer" onClick={(e) => e.stopPropagation()}><div className="drawer-head"><div><span className="eyebrow"><span /> SEU MOMENTO MINEIRO</span><h2>Meu pedido <small>({count})</small></h2></div><button onClick={() => setCartOpen(false)} aria-label="Fechar pedido"><X /></button></div>
-        {selected.length === 0 ? <div className="cart-empty"><ShoppingBag size={34} /><h3>Sua sacola está vazia</h3><p>Escolha seus favoritos no cardápio e monte seu pedido.</p><button className="button button-dark" onClick={() => setCartOpen(false)}>Explorar cardápio</button></div> : <><div className="cart-items">{selected.map((p) => <div className="cart-item" key={p.id}><span className="cart-thumb"><Coffee size={18} /></span><div className="cart-item-copy"><b>{p.name}</b><small>Valor a consultar</small><div className="quantity"><button onClick={() => change(p.id, -1)} aria-label="Diminuir"><Minus size={13} /></button><span>{cart[p.id]}</span><button onClick={() => change(p.id, 1)} aria-label="Aumentar"><Plus size={13} /></button></div></div></div>)}</div><div className="cart-form"><label>Seu nome<input value={customer} onChange={(e) => setCustomer(e.target.value)} placeholder="Como podemos chamar você?" /></label><label>Observações<textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Alguma preferência ou detalhe?"></textarea></label><p>Os valores e a disponibilidade serão confirmados pela equipe no WhatsApp.</p><button className="button button-dark full-button" onClick={order}>Enviar pedido pelo WhatsApp <ArrowUpRight size={16} /></button></div></>}
-      </aside></div>}
-      {lightbox && <div className="lightbox" onClick={() => setLightbox(null)}><button aria-label="Fechar imagem"><X /></button><img src={lightbox} alt="Fotografia ampliada da Casa Montês" /></div>}
-    </main>
-  );
+  const notify = (message: string) => { setToast(message); window.setTimeout(() => setToast(""), 2600); };
+  return <main>
+    <div className="topline"><span>ATENDIMENTO EM MONTE SIÃO E REGIÃO</span><span>IMÓVEIS · NEGÓCIOS · CONFIANÇA</span></div>
+    <header className="header">
+      <a className="brand" href="#inicio"><span className="brand-mark">HV</span><span><b>HILTON VIEIRA</b><small>IMÓVEIS & NEGÓCIOS</small></span></a>
+      <button className="menu-toggle" onClick={() => setMenu(!menu)} aria-label="Abrir menu">{menu ? <X/> : <Menu/>}</button>
+      <nav className={menu ? "nav open" : "nav"}><a href="#imoveis" onClick={() => setMenu(false)}>Imóveis</a><a href="#sobre" onClick={() => setMenu(false)}>Sobre</a><a href="#diferenciais" onClick={() => setMenu(false)}>Diferenciais</a><a className="nav-cta" href="#contato" onClick={() => setMenu(false)}>Fale comigo <ArrowUpRight size={14}/></a></nav>
+    </header>
+    <section className="hero" id="inicio"><div className="hero-photo"/><div className="hero-shade"/><div className="hero-content"><div className="eyebrow"><i/> SEU PRÓXIMO CAPÍTULO COMEÇA AQUI</div><h1>O lugar certo<br/>para <em>chamar de seu.</em></h1><p>Encontre seu próximo imóvel em Monte Sião e região com orientação próxima, informações claras e tranquilidade em cada etapa.</p><div className="hero-actions"><a className="button button-light" href="#imoveis">Explorar imóveis <ArrowRight size={16}/></a><a className="hero-link" href="#contato">Vamos conversar <ArrowUpRight size={15}/></a></div></div><div className="hero-note">IMÓVEIS SELECIONADOS<br/>COM ATENÇÃO A CADA DETALHE</div><div className="hero-bottom"><span>MONTE SIÃO · MINAS GERAIS</span><span>ROLE PARA DESCOBRIR ↓</span></div></section>
+    <section className="search-strip"><div className="search-inner"><label>TIPO DE IMÓVEL<select value={type} onChange={e=>setType(e.target.value)}><option>Todos</option><option>Casa</option><option>Apartamento</option><option>Terreno</option></select></label><label>FAIXA DE VALOR<select value={price} onChange={e=>setPrice(e.target.value)}><option>Todos</option><option>Até R$ 300 mil</option><option>R$ 300–600 mil</option><option>Acima de R$ 600 mil</option></select></label><label className="search-label">BUSCAR<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Bairro, tipo ou imóvel..."/></label><a className="search-button" href="#imoveis"><Search size={16}/> Ver opções</a></div></section>
+    <section className="section listings" id="imoveis"><div className="section-head"><div><div className="eyebrow dark"><i/> UMA SELEÇÃO PARA VOCÊ</div><h2>Encontre um imóvel<br/><em>com a sua cara.</em></h2></div><p>Boas escolhas começam com boas possibilidades. Explore as opções demonstrativas e imagine o que vem pela frente.</p></div><div className="listing-grid">{visible.map(p=><article className="property-card" key={p.id}><div className="property-image"><img src={p.image} alt={p.title}/><span className="tag">{p.tag}</span><button className={saved.includes(p.id)?"heart active":"heart"} aria-label="Salvar imóvel" onClick={()=>setSaved(s=>s.includes(p.id)?s.filter(x=>x!==p.id):[...s,p.id])}><Heart size={17} fill={saved.includes(p.id)?"currentColor":"none"}/></button></div><div className="property-info"><div className="property-meta"><span>{p.type.toUpperCase()}</span><span>{p.place.toUpperCase()}</span></div><h3>{p.title}</h3><p className="details">{p.details}</p><div className="property-bottom"><strong>{money(p.price)}</strong><button className="arrow-btn" onClick={()=>contact("Olá, Hilton! Tenho interesse no imóvel: "+p.title+". Pode me passar mais informações?")} aria-label="Consultar imóvel"><ArrowUpRight/></button></div></div></article>)}</div>{visible.length===0&&<p className="no-results">Nenhum imóvel corresponde à busca. Tente outros filtros.</p>}<p className="demo-disclaimer">Imóveis, imagens e valores ilustrativos, apenas para demonstração. Não representam ofertas reais.</p></section>
+    <section className="about section" id="sobre"><div className="about-image"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=85" alt="Ambiente residencial contemporâneo"/><div className="image-caption">ESCOLHAS COM MAIS CONFIANÇA<strong>Seu imóvel.<br/>Seu momento.</strong></div></div><div className="about-copy"><div className="eyebrow dark"><i/> SOBRE O ATENDIMENTO</div><h2>Mais do que encontrar um imóvel. <em>É encontrar o seu lugar.</em></h2><p>Comprar, vender ou investir em um imóvel é uma decisão importante. A proposta de Hilton Vieira é acompanhar cada etapa com atenção, transparência e uma conversa sem complicação.</p><p>Com atendimento em Monte Sião e região, você tem apoio para entender as opções e avançar com mais segurança.</p><a className="button button-dark" href="#contato">Conheça meu atendimento <ArrowUpRight size={15}/></a></div></section>
+    <section className="section values" id="diferenciais"><div className="eyebrow dark"><i/> UMA EXPERIÊNCIA MAIS TRANQUILA</div><h2>Do primeiro contato<br/><em>até a decisão certa.</em></h2><div className="value-grid"><article><span>01</span><ShieldCheck/><h3>Atendimento próximo</h3><p>Conversa direta para entender o que você procura e respeitar seu momento.</p></article><article><span>02</span><HomeIcon/><h3>Opções com propósito</h3><p>Busca orientada pelo seu perfil, prioridades e planos para o futuro.</p></article><article><span>03</span><KeyRound/><h3>Transparência</h3><p>Informações claras para avaliar cada possibilidade com calma.</p></article></div></section>
+    <section className="contact" id="contato"><div className="contact-inner"><div className="eyebrow"><i/> VAMOS CONVERSAR?</div><h2>Seu próximo imóvel<br/>pode estar <em>mais perto.</em></h2><p>Conte um pouco do que você procura. Será um prazer ajudar você a encontrar boas possibilidades em Monte Sião e região.</p><button className="button button-light" onClick={()=>contact()}>Falar com Hilton pelo WhatsApp <MessageCircle size={16}/></button><small>Atendimento em Monte Sião – MG e região</small></div><div className="contact-decoration">HV</div></section>
+    <footer className="footer"><a className="brand" href="#inicio"><span className="brand-mark">HV</span><span><b>HILTON VIEIRA</b><small>IMÓVEIS & NEGÓCIOS</small></span></a><span>Monte Sião · Minas Gerais</span><span>© {new Date().getFullYear()} Hilton Vieira · Site demonstrativo</span></footer><button className="floating-whatsapp" onClick={()=>contact()} aria-label="Falar pelo WhatsApp"><MessageCircle/></button>{toast&&<div className="toast">{toast}</div>}
+  </main>;
 }
