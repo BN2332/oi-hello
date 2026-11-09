@@ -31,10 +31,9 @@ const products = [
   { id: 6, name: "Doce de Minas", category: "Doces", description: "Um carinho doce para fechar sua experiência.", image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=900&q=85" },
 ];
 const gallery = [
-  "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1000&q=85",
-  "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1000&q=85",
-  "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1000&q=85",
-  "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=1000&q=85",
+  { id: "DeKqkbBAa0f", kind: "p", title: "Um registro da Casa Montês" },
+  { id: "Deh4scGhZL0", kind: "reel", title: "Conheça nosso espaço" },
+  { id: "DeAFAY0B8Fi", kind: "reel", title: "Um pouco da nossa experiência" },
 ];
 
 function Home() {
@@ -125,7 +124,7 @@ function Home() {
       </section>
 
       <section className="intro section-pad" id="historia">
-        <div className="intro-image-wrap"><img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=1100&q=85" alt="Ambiente acolhedor de cafeteria com mesas de madeira" /><div className="image-caption"><span>☼</span><div><b>Um lugar para ficar</b><small>e aproveitar o momento.</small></div></div></div>
+        <div className="intro-image-wrap intro-instagram"><iframe src="https://www.instagram.com/p/DeKqkbBAa0f/embed/" title="Publicação real da Casa Montês no Instagram" loading="lazy" /><div className="image-caption"><span>☼</span><div><b>Um lugar para ficar</b><small>e aproveitar o momento.</small></div></div></div>
         <div className="intro-copy">
           <div className="eyebrow"><span /> PRAZER, SOMOS A CASA MONTÊS</div>
           <h2>Mais que uma refeição.<br /><em>Um jeito de se sentir em casa.</em></h2>
@@ -147,7 +146,7 @@ function Home() {
         </div>
         <div className="product-grid">
           {filtered.map((p) => <article className="product-card" key={p.id}>
-            <div className="product-image"><img src={p.image} alt={p.name} loading="lazy" />{p.tag && <span className="product-tag">{p.tag}</span>}<button className="add-product" onClick={() => add(p.id)} aria-label={`Adicionar ${p.name}`}><Plus size={19} /></button></div>
+            <div className={`product-image product-art product-art-${p.category.toLowerCase()}`}><div className="product-art-mark">{p.category === "Cafés" ? <Coffee size={34} /> : p.category === "Quitandas" ? <Wheat size={34} /> : <Heart size={32} />}</div><span className="product-art-label">SABOR DE MINAS</span>{p.tag && <span className="product-tag">{p.tag}</span>}<button className="add-product" onClick={() => add(p.id)} aria-label={`Adicionar ${p.name}`}><Plus size={19} /></button></div>
             <div className="product-info"><div className="product-meta">{p.category}<span>VALOR A CONSULTAR</span></div><h3>{p.name}</h3><p>{p.description}</p></div>
           </article>)}
           {filtered.length === 0 && <div className="empty-results">Não encontramos esse item. Tente outra busca.</div>}
@@ -159,7 +158,7 @@ function Home() {
 
       <section className="experience section-pad" id="ambiente">
         <div className="section-heading experience-heading"><div><div className="eyebrow"><span /> UM ESPAÇO PARA DESACELERAR</div><h2>Entre, escolha seu canto<br /><em>e fique à vontade.</em></h2></div><p>Da primeira xícara ao último pedacinho, queremos que cada visita tenha gosto de quero mais.</p></div>
-        <div className="gallery-grid">{gallery.map((src, i) => <button className={`gallery-item gallery-${i + 1}`} key={src} onClick={() => setLightbox(src)} aria-label="Ampliar fotografia do ambiente"><img src={src} alt={["Cafeteria acolhedora","Café sendo preparado","Pães artesanais","Quitandas fresquinhas"][i]} loading="lazy" /><span>0{i + 1} <ArrowUpRight size={15} /></span></button>)}</div>
+        <div className="instagram-gallery">{gallery.map((item, i) => <article className="instagram-card" key={item.id}><div className="instagram-card-top"><span>CASA MONTÊS</span><small>0{i + 1}</small></div><iframe src={`https://www.instagram.com/${item.kind}/${item.id}/embed/`} title={item.title} loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen /><a href={`https://www.instagram.com/${item.kind}/${item.id}/`} target="_blank" rel="noreferrer">{item.title} <ArrowUpRight size={14} /></a></article>)}</div>
       </section>
 
       <section className="values-strip"><div><Coffee /><b>Café com carinho</b><span>Uma pausa que faz bem.</span></div><div><Wheat /><b>Sabor de verdade</b><span>Tradição em cada detalhe.</span></div><div><Heart /><b>Acolhimento mineiro</b><span>Receber bem é nossa essência.</span></div><div><Leaf /><b>Momentos especiais</b><span>Para estar junto e aproveitar.</span></div></section>
@@ -177,7 +176,7 @@ function Home() {
       <a className="floating-whatsapp" href="https://wa.me/5535933003516" target="_blank" rel="noreferrer" aria-label="Falar com a Casa Montês pelo WhatsApp"><MessageCircle size={22} /></a>
 
       {cartOpen && <div className="drawer-backdrop" onClick={() => setCartOpen(false)}><aside className="cart-drawer" onClick={(e) => e.stopPropagation()}><div className="drawer-head"><div><span className="eyebrow"><span /> SEU MOMENTO MINEIRO</span><h2>Meu pedido <small>({count})</small></h2></div><button onClick={() => setCartOpen(false)} aria-label="Fechar pedido"><X /></button></div>
-        {selected.length === 0 ? <div className="cart-empty"><ShoppingBag size={34} /><h3>Sua sacola está vazia</h3><p>Escolha seus favoritos no cardápio e monte seu pedido.</p><button className="button button-dark" onClick={() => setCartOpen(false)}>Explorar cardápio</button></div> : <><div className="cart-items">{selected.map((p) => <div className="cart-item" key={p.id}><img src={p.image} alt="" /><div className="cart-item-copy"><b>{p.name}</b><small>Valor a consultar</small><div className="quantity"><button onClick={() => change(p.id, -1)} aria-label="Diminuir"><Minus size={13} /></button><span>{cart[p.id]}</span><button onClick={() => change(p.id, 1)} aria-label="Aumentar"><Plus size={13} /></button></div></div></div>)}</div><div className="cart-form"><label>Seu nome<input value={customer} onChange={(e) => setCustomer(e.target.value)} placeholder="Como podemos chamar você?" /></label><label>Observações<textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Alguma preferência ou detalhe?"></textarea></label><p>Os valores e a disponibilidade serão confirmados pela equipe no WhatsApp.</p><button className="button button-dark full-button" onClick={order}>Enviar pedido pelo WhatsApp <ArrowUpRight size={16} /></button></div></>}
+        {selected.length === 0 ? <div className="cart-empty"><ShoppingBag size={34} /><h3>Sua sacola está vazia</h3><p>Escolha seus favoritos no cardápio e monte seu pedido.</p><button className="button button-dark" onClick={() => setCartOpen(false)}>Explorar cardápio</button></div> : <><div className="cart-items">{selected.map((p) => <div className="cart-item" key={p.id}><span className="cart-thumb"><Coffee size={18} /></span><div className="cart-item-copy"><b>{p.name}</b><small>Valor a consultar</small><div className="quantity"><button onClick={() => change(p.id, -1)} aria-label="Diminuir"><Minus size={13} /></button><span>{cart[p.id]}</span><button onClick={() => change(p.id, 1)} aria-label="Aumentar"><Plus size={13} /></button></div></div></div>)}</div><div className="cart-form"><label>Seu nome<input value={customer} onChange={(e) => setCustomer(e.target.value)} placeholder="Como podemos chamar você?" /></label><label>Observações<textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Alguma preferência ou detalhe?"></textarea></label><p>Os valores e a disponibilidade serão confirmados pela equipe no WhatsApp.</p><button className="button button-dark full-button" onClick={order}>Enviar pedido pelo WhatsApp <ArrowUpRight size={16} /></button></div></>}
       </aside></div>}
       {lightbox && <div className="lightbox" onClick={() => setLightbox(null)}><button aria-label="Fechar imagem"><X /></button><img src={lightbox} alt="Fotografia ampliada da Casa Montês" /></div>}
     </main>
