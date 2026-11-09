@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
-  ArrowDown, ArrowRight, ArrowUpRight, Check, ChevronDown, Coffee, Heart,
-  MapPin, Menu as MenuIcon, Minus, Plus, Search, ShoppingBag, Star, X,
-  Clock3, Instagram, Phone, MessageCircle, Utensils, Leaf, Wheat,
+  ArrowDown, ArrowRight, ArrowUpRight, Coffee, Heart, MapPin,
+  Menu as MenuIcon, Minus, Plus, Search, ShoppingBag, X,
+  Clock3, Phone, MessageCircle, Leaf, Wheat,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -62,8 +62,17 @@ function Home() {
   const order = () => {
     if (!selected.length) return;
     const lines = selected.map((p) => `• ${cart[p.id]}x ${p.name}`).join("%0A");
-    const message = `Olá, Casa Montês! Gostaria de consultar disponibilidade e valores:%0A%0A${lines}%0A%0ANome: ${encodeURIComponent(customer || "Não informado")}%0AObservações: ${encodeURIComponent(notes || "Nenhuma")}%0A%0APodem confirmar os valores e as opções disponíveis?`;
-    window.open(`https://wa.me/${whatsapp}?text=${message}`, "_blank", "noopener,noreferrer");
+    const message = [
+      "Olá, Casa Montês! Gostaria de consultar disponibilidade e valores:",
+      "",
+      ...selected.map((p) => `${cart[p.id]}x ${p.name}`),
+      "",
+      `Nome: ${customer.trim() || "Não informado"}`,
+      `Observações: ${notes.trim() || "Nenhuma"}`,
+      "",
+      "Podem confirmar os valores e as opções disponíveis?",
+    ].join("\n");
+    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
   };
 
   return (
