@@ -18,39 +18,25 @@ const ITEMS: Item[] = [
 const COLORS: Record<string,string> = { Godly:"#e8b65d", Ancient:"#d77b4e", Chroma:"#c48bff", Especial:"#78a9d7" };
 const WA_NUMBER = "";
 function WeaponArt({ item, compact = false }: { item: Item; compact?: boolean }) {
-  const color = COLORS[item.rarity] || "#aeb8c7";
-  const isGun = item.type === "arma";
-  const hash = [...item.name].reduce((a,c)=>a+c.charCodeAt(0),0);
-  const tilt = (hash % 9) - 4;
-  const accent = item.rarity === "Chroma" ? "url(#rainbow)" : color;
-  return <svg className={compact ? "weapon-art compact" : "weapon-art"} viewBox="0 0 220 260" role="img" aria-label={item.name}>
-    <defs>
-      <linearGradient id="blade" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#fff"/><stop offset=".32" stopColor={color}/><stop offset="1" stopColor="#24232d"/></linearGradient>
-      <linearGradient id="rainbow"><stop stopColor="#ff668a"/><stop offset=".3" stopColor="#f6d16a"/><stop offset=".62" stopColor="#65d9c2"/><stop offset="1" stopColor="#9d79ff"/></linearGradient>
-      <filter id="glow"><feGaussianBlur stdDeviation="5"/></filter>
-    </defs>
-    <circle cx="110" cy="130" r="79" fill={color} opacity=".08" filter="url(#glow)"/>
-    <g transform={`rotate(${tilt} 110 130)`}>
-    {isGun ? <>
-      <path d="M30 75 Q30 67 39 67 H166 L192 82 V111 H151 L145 130 H106 L98 111 H30Z" fill="url(#blade)" stroke={accent} strokeWidth="3"/>
-      <path d="M115 111 H157 L148 207 Q145 217 135 217 H112 L100 157Z" fill="#292833" stroke={accent} strokeWidth="4"/>
-      <path d="M43 82 H145 V91 H43Z" fill="#fff" opacity=".35"/>
-      <path d="M164 79 L190 87 V101 H164Z" fill="#17171e" stroke={accent} strokeWidth="2"/>
-      <path d="M112 143 Q92 158 111 176" fill="none" stroke={accent} strokeWidth="5"/>
-      <path d="M54 99 H88" stroke="#fff" opacity=".35" strokeWidth="3"/>
-    </> : <>
-      <path d="M110 13 Q96 68 76 111 L88 147 L110 160 L132 147 L144 111 Q124 68 110 13Z" fill="url(#blade)" stroke={accent} strokeWidth="3"/>
-      <path d="M110 17 L110 157 L132 147 L144 111Z" fill="#fff" opacity=".16"/>
-      <path d="M62 145 Q110 126 158 145 L146 161 H74Z" fill="#272630" stroke={accent} strokeWidth="4"/>
-      <path d="M91 157 H129 L138 226 L110 250 L82 226Z" fill="#282630" stroke={accent} strokeWidth="4"/>
-      <path d="M89 178 L131 218 M131 178 L89 218" stroke={accent} strokeWidth="7" opacity=".9"/>
-      <path d="M110 250 L128 235 L110 219 L92 235Z" fill={accent}/>
-      {item.name.toLowerCase().includes("scythe") && <path d="M112 18 Q180 8 175 75 Q160 110 128 93 Q166 78 148 49 Q133 35 112 40Z" fill="none" stroke={accent} strokeWidth="12"/>}
-      {item.name.toLowerCase().includes("heart") && <path d="M110 64 C77 32 50 78 110 112 C170 78 143 32 110 64Z" fill={accent} stroke="#fff" strokeWidth="2"/>}
-    </>}
-    </g>
-    <path d="M23 232 Q110 250 197 232" fill="none" stroke={color} strokeOpacity=".22" strokeWidth="2"/>
-  </svg>;
+  const [failed, setFailed] = useState(false);
+  const slug = item.name.toLowerCase()
+    .normalize("NFD").replace(/[\\u0300-\\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const imageUrl = `https://s-stats-platform-cdn.op.gg/roblox/murder-mystery-2/images/weapons/${slug}.webp?image=q_auto%3Agood%2Cf_png%2Cw_640`;
+  return failed ? (
+    <div className={compact ? "weapon-art compact weapon-missing" : "weapon-art weapon-missing"} role="img" aria-label={item.name}>
+      <span>IMAGEM NÃO DISPONÍVEL</span>
+      <b>{item.name}</b>
+    </div>
+  ) : (
+    <img
+      className={compact ? "weapon-art compact weapon-photo" : "weapon-art weapon-photo"}
+      src={imageUrl}
+      alt={`Imagem real do item ${item.name} de Murder Mystery 2`}
+      loading="lazy"
+      onError={() => setFailed(true)}
+    />
+  );
 }
 function whatsapp(message: string) {
   if (!WA_NUMBER) { window.alert("O WhatsApp da loja ainda não foi configurado. Adicione o número no site para ativar este botão."); return; }
