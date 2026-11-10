@@ -18,23 +18,31 @@ const ITEMS: Item[] = [
 const COLORS: Record<string,string> = { Godly:"#e8b65d", Ancient:"#d77b4e", Chroma:"#c48bff", Especial:"#78a9d7" };
 const WA_NUMBER = "";
 function WeaponArt({ item, compact = false }: { item: Item; compact?: boolean }) {
-  const [failed, setFailed] = useState(false);
+  const [sourceIndex, setSourceIndex] = useState(0);
   const slug = item.name.toLowerCase()
     .normalize("NFD").replace(/[\\u0300-\\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  const imageUrl = `https://s-stats-platform-cdn.op.gg/roblox/murder-mystery-2/images/weapons/${slug}.webp?image=q_auto%3Agood%2Cf_png%2Cw_640`;
-  return failed ? (
-    <div className={compact ? "weapon-art compact weapon-missing" : "weapon-art weapon-missing"} role="img" aria-label={item.name}>
-      <span>IMAGEM NÃO DISPONÍVEL</span>
-      <b>{item.name}</b>
-    </div>
-  ) : (
+  // OP.GG first; MM2Valuess is a second real-item image source for entries
+  // whose OP.GG asset is not available. Its filenames omit separators.
+  const imageSources = [
+    `https://s-stats-platform-cdn.op.gg/roblox/murder-mystery-2/images/weapons/${slug}.webp?image=q_auto%3Agood%2Cf_png%2Cw_640`,
+    `https://mm2valuess.com/wp-content/uploads/mm2-item-images/${slug.replace(/-/g, "")}.png`
+  ];
+  if (sourceIndex >= imageSources.length) {
+    return (
+      <div className={compact ? "weapon-art compact weapon-missing" : "weapon-art weapon-missing"} role="img" aria-label={item.name}>
+        <span>FOTO INDISPONÍVEL NA FONTE</span>
+        <b>{item.name}</b>
+      </div>
+    );
+  }
+  return (
     <img
       className={compact ? "weapon-art compact weapon-photo" : "weapon-art weapon-photo"}
-      src={imageUrl}
-      alt={`Imagem real do item ${item.name} de Murder Mystery 2`}
+      src={imageSources[sourceIndex]}
+      alt={`Imagem do item real ${item.name} de Murder Mystery 2`}
       loading="lazy"
-      onError={() => setFailed(true)}
+      onError={() => setSourceIndex(current => current + 1)}
     />
   );
 }
