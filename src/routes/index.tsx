@@ -99,7 +99,7 @@ function BarberSite() {
   function finish(e: FormEvent) {
     e.preventDefault();
     if (!name.trim() || phone.replace(/\\D/g, "").length < 10 || !accepted) return notify("Confira seus dados e aceite a política para continuar.");
-    const person = barber === "any" ? (barbers.find(b => !bookings.some(x => x.date === date && x.time === time && x.barberId === b.id && x.status !== "cancelado")) || barbers[0]) : barbers.find(b => b.id === barber)!;
+    const person = (barber === "any" ? barbers.find(b => !bookings.some(x => x.date === date && x.time === time && x.barberId === b.id && x.status !== "cancelado")) : barbers.find(b => b.id === barber)) ?? barbers[0]!;
     const item: Booking = { code: "N27-" + Math.random().toString(36).slice(2, 8).toUpperCase(), name: name.trim(), phone, serviceIds: selectedServices, barberId: person.id, date, time, duration, total, note, status: "confirmado" };
     const next = [...readBookings(), item];
     if (!saveBookings(next)) return notify("Não foi possível salvar neste navegador. Verifique o armazenamento.");
