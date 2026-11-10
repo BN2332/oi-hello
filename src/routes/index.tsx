@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { ArrowDownLeft, ArrowUpRight, Bell, ChevronRight, CircleHelp, Clock3, CreditCard, Eye, EyeOff, Headphones, LayoutDashboard, LockKeyhole, LogOut, Menu, ShieldCheck, UserRound, Wallet, X, Landmark, FileText, CheckCircle2, AlertCircle } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
+import { ArrowDownLeft, ArrowUpRight, Bell, ChevronRight, Clock3, Eye, EyeOff, LayoutDashboard, LockKeyhole, LogOut, Menu, ShieldCheck, UserRound, X, Landmark, FileText, AlertCircle } from "lucide-react";
 
 type User = { id?: string; email: string };
 type AuthMode = "login" | "register";
@@ -31,7 +31,7 @@ function GreciaPay() {
     return () => { active = false; };
   }, []);
 
-  async function submitAuth(event: React.FormEvent<HTMLFormElement>) {
+  async function submitAuth(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setAuthBusy(true); setAuthError(""); setAuthMessage("");
     try {
