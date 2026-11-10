@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { clearSessionCookies, isSameOrigin, json, cookieValue, supabaseRequest } from "../../lib/auth.server";
+import { clearSessionCookies, isSameOrigin, json, cookieValue, supabaseRequest } from "../lib/auth.server";
 
 export const Route = createFileRoute("/api/auth/logout")({
   server: {
