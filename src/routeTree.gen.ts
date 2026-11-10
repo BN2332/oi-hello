@@ -39,9 +39,9 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/auth/login' | '/api/auth/register' | '/api/auth/me' | '/api/auth/logout'
+  fullPaths: '/' | '/api/auth/login' | '/api/auth/register' | '/api/auth/me' | '/api/auth/logout' | '/api/health'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/auth/login' | '/api/auth/register' | '/api/auth/me' | '/api/auth/logout'
+  to: '/' | '/api/auth/login' | '/api/auth/register' | '/api/auth/me' | '/api/auth/logout' | '/api/health'
   id: '__root__' | '/' | '/api/auth/login' | '/api/auth/register' | '/api/auth/me' | '/api/auth/logout' | '/api/health'
   fileRoutesById: FileRoutesById
 }
