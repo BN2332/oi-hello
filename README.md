@@ -21,3 +21,29 @@ npm install
 npm run dev
 npm run build
 ```
+
+
+## Autenticação GRECIA PAY
+
+O projeto inclui endpoints de cadastro, login, consulta de sessão e logout usando Supabase Auth. As senhas são gerenciadas pelo Supabase Auth; o site não armazena senhas em texto puro.
+
+### Configuração obrigatória antes de usar o login
+
+1. Crie ou conecte um projeto Supabase para a GRECIA PAY.
+2. No painel do projeto, copie a Project URL e a chave publicável (anon/public).
+3. Cadastre estas variáveis no ambiente de servidor/Secrets do deploy:
+   - `SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
+4. Habilite Email/Password em Authentication → Providers e configure a confirmação de e-mail conforme a política da operação.
+5. Faça novo deploy após salvar os Secrets.
+
+**Não coloque chaves privadas ou `service_role` no navegador nem no GitHub.** O backend usa cookies `HttpOnly`, `Secure` e `SameSite=Lax` para manter a sessão.
+
+### Endpoints
+
+- `POST /api/auth/register` — cria uma conta.
+- `POST /api/auth/login` — autentica e inicia a sessão.
+- `GET /api/auth/me` — consulta a sessão e renova o token quando necessário.
+- `POST /api/auth/logout` — encerra a sessão.
+
+Sem as duas variáveis de ambiente, a API responde `503 LOGIN_NAO_CONFIGURADO`; isso evita simular um login que não está conectado a um provedor real.
