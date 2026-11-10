@@ -51,7 +51,7 @@ function DemoCreator() {
       <div className="vn-hero-copy">
         <p className="vn-kicker"><span/> ELEGÂNCIA · ATITUDE · PERSONALIDADE</p>
         <h1>Um lado seu<br/>que merece <i>brilhar.</i></h1>
-        <p>Uma experiência visual exclusiva, criada para celebrar confiança, estilo e autenticidade.</p>
+        <p>Uma experiência mais íntima e provocante, com ensaios sensuais, lingerie elegante, transparências sutis e uma dose de mistério — sempre com bom gosto.</p>
         <a href="#conteudo" className="vn-primary">EXPLORE A EXPERIÊNCIA <ArrowRight size={16}/></a>
       </div>
       <div className="vn-hero-bottom"><span>VALENTINA NOIR — CONCEITO CRIATIVO</span><span>01 / 04</span></div>
@@ -62,24 +62,24 @@ function DemoCreator() {
       <p className="vn-intro-text">Valentina Noir é uma personagem inteiramente fictícia, criada para demonstrar como uma marca pessoal pode ganhar uma presença digital sofisticada, segura e memorável.</p>
     </section>
     <section className="vn-content" id="conteudo">
-      <div className="vn-section-top"><div><p className="vn-kicker">GALERIA CONCEITUAL</p><h2>Um universo <i>particular.</i></h2></div><p>Prévia visual de um projeto de assinatura. As imagens são ilustrativas e não representam a personagem fictícia.</p></div>
+      <div className="vn-section-top"><div><p className="vn-kicker">GALERIA CONCEITUAL</p><h2>Um universo <i>particular.</i></h2></div><p>Uma seleção de ensaios conceituais com clima sensual, poses sofisticadas e estética intimista. Imagens ilustrativas.</p></div>
       <div className="vn-gallery">
-        <article className="vn-tile vn-tile-large"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=85" alt="Retrato de moda editorial com iluminação suave"/><span>01 — EDITORIAL</span></article>
-        <article className="vn-tile"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=850&q=85" alt="Ensaio de moda e estilo"/><span>02 — STYLE</span></article>
-        <article className="vn-tile"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=850&q=85" alt="Retrato feminino em fotografia de moda"/><span>03 — PORTRAIT</span></article>
+        <article className="vn-tile vn-tile-large"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=85" alt="Retrato de moda editorial com iluminação suave"/><span>01 — SENSUAL EDITORIAL</span></article>
+        <article className="vn-tile"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=850&q=85" alt="Ensaio de moda e estilo"/><span>02 — INTIMATE STYLE</span></article>
+        <article className="vn-tile"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=850&q=85" alt="Retrato feminino em fotografia de moda"/><span>03 — AFTER DARK</span></article>
       </div>
-      <p className="vn-gallery-caption"><LockKeyhole size={14}/> Prévia ilustrativa. Nenhum conteúdo adulto explícito é exibido nesta demonstração.</p>
+      <p className="vn-gallery-caption"><LockKeyhole size={14}/> Prévia ilustrativa com sensualidade sugerida, sem nudez explícita. As fotografias não representam a personagem fictícia.</p>
     </section>
     <section className="vn-exclusive" id="exclusivo">
       <div className="vn-exclusive-image"><img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=85" alt="Fotografia editorial de moda com look elegante"/></div>
-      <div className="vn-exclusive-copy"><p className="vn-kicker">ÁREA EXCLUSIVA · CONCEITO</p><h2>Mais perto.<br/><i>Mais pessoal.</i></h2><p>Em um projeto real, esta área poderia apresentar planos, benefícios, regras de acesso e informações transparentes sobre a assinatura — sempre com consentimento, privacidade e segurança.</p>
+      <div className="vn-exclusive-copy"><p className="vn-kicker">ÁREA EXCLUSIVA · CONCEITO</p><h2>Mais perto.<br/><i>Mais pessoal.</i></h2><p>Em um projeto real, esta área poderia reunir ensaios sensuais exclusivos, editoriais de lingerie e conteúdo intimista com acesso restrito — sempre com consentimento, privacidade e segurança.</p>
         <div className="vn-benefit"><ShieldCheck/><span><b>Privacidade em primeiro lugar</b><small>Informações claras e proteção de dados.</small></span></div>
         <div className="vn-benefit"><Crown/><span><b>Experiência premium</b><small>Identidade visual consistente em cada detalhe.</small></span></div>
         <button className="vn-primary" onClick={() => setNotice(true)}>VER COMO FUNCIONARIA <ArrowRight size={15}/></button>
       </div>
     </section>
-    <section className="vn-quote"><Sparkles/><h2>Autenticidade é o<br/>seu melhor <i>acessório.</i></h2><p>VALENTINA NOIR · PERSONAGEM FICTÍCIA</p></section>
-    <footer className="vn-footer" id="contato"><a href="#inicio" className="vn-logo">V<span>.</span>N <small>VALENTINA NOIR</small></a><p>Conceito de website para portfólio. Identidade, modelo e conteúdo fictícios.</p><div><a href="#inicio">VOLTAR AO TOPO <ArrowUpRight size={13}/></a></div><small>© 2026 · DEMONSTRAÇÃO NÃO COMERCIAL · +18</small></footer>
+    <section className="vn-quote"><Sparkles/><h2>A provocação está<br/>nos detalhes. <i>O resto é mistério.</i></h2><p>VALENTINA NOIR · PERSONAGEM FICTÍCIA</p></section>
+    <footer className="vn-footer" id="contato"><a href="#inicio" className="vn-logo">V<span>.</span>N <small>VALENTINA NOIR</small></a><p>Demonstração de website para portfólio. Personagem e identidade fictícias; imagens editoriais ilustrativas.</p><div><a href="#inicio">VOLTAR AO TOPO <ArrowUpRight size={13}/></a></div><small>© 2026 · DEMONSTRAÇÃO NÃO COMERCIAL · +18</small></footer>
     <a className="vn-float" href="#contato" aria-label="Informações do projeto"><Instagram size={20}/></a>
   </main>;
 }
