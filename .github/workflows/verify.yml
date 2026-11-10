@@ -1,0 +1,43 @@
+name: Verify application
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-api-smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Build
+        run: npm run build
+      - name: Start production preview
+        run: |
+          npm run start > /tmp/grecia-pay-server.log 2>&1 &
+          echo $! > /tmp/grecia-pay-server.pid
+      - name: Wait for server
+        run: |
+          for i in $(seq 1 60); do
+            if curl --silent --fail http://127.0.0.1:3000/ >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/grecia-pay-server.log
+          exit 1
+      - name: Verify API routes return expected JSON
+        run: npm run test:api
+      - name: Show server log on failure
+        if: failure()
+        run: cat /tmp/grecia-pay-server.log
