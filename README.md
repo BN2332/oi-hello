@@ -1,19 +1,41 @@
 # GRECIA PAY
 
-Website independente para apresentação da experiência de checkout GRECIA PAY.
+Aplicação independente da GRECIA PAY, com painel de cliente e carteira demonstrativa. Não possui integração com a GRECIA MM2.
 
-## Sobre
-Interface premium em preto e verde, responsiva para desktop e dispositivos móveis. O projeto é independente de qualquer outra loja ou aplicação.
+## Recursos
+- Painel de cliente responsivo para desktop e celular.
+- Cadastro, login, consulta de sessão e logout via Supabase Auth.
+- Visão de saldo demonstrativo zerado.
+- Áreas de movimentações e perfil.
+- Estados visuais de conta, segurança e instituição parceira.
+- Depósitos e saques permanentemente desativados nesta versão.
+- Nenhuma cobrança, transferência, custódia ou movimentação de dinheiro é realizada.
 
-## Recursos da interface
-- Landing page institucional da GRECIA PAY.
-- Apresentação de recursos, fluxo de pagamento e planos ilustrativos.
-- Demonstração interativa de checkout e revisão de pedido.
-- FAQ, contato e navegação responsiva.
-- Avisos claros de ambiente demonstrativo e processamento por gateway externo.
+## Limites financeiros e regulatórios
 
-## Importante
-Esta versão contém a interface demonstrativa. Não processa pagamentos reais, não cria contas reais e não armazena transações. Para produção, configure um gateway de pagamento externo, backend seguro, autenticação, banco de dados, webhooks assinados, controles administrativos e páginas legais. O nome do gateway responsável deve ser exibido no checkout.
+Esta versão é exclusivamente demonstrativa. O saldo de R$ 0,00 não representa fundos reais. Não há geração de PIX, cobrança, recebimento de depósitos, manutenção de saldo sacável, transferência ou saque. Não solicite que clientes enviem dinheiro para a GRECIA PAY.
+
+A habilitação futura de funcionalidades financeiras depende de análise jurídica e regulatória, contratação de instituição financeira ou instituição de pagamento parceira, diligência/KYC, contratos, controles antifraude e integração técnica aprovada. O projeto não se apresenta como banco, instituição de pagamento ou custodiante de recursos.
+
+## Configurar autenticação
+
+1. Crie um projeto Supabase.
+2. Copie a Project URL e a chave publicável (anon/public).
+3. Cadastre no ambiente de servidor/Secrets do deploy:
+   - `SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
+4. Habilite Email/Password em Authentication → Providers.
+5. Faça novo deploy após salvar os Secrets.
+
+Não coloque chaves privadas ou `service_role` no navegador nem no GitHub. O backend usa cookies `HttpOnly`, `Secure` e `SameSite=Lax`.
+
+### Endpoints
+- `POST /api/auth/register` — cria uma conta de acesso.
+- `POST /api/auth/login` — autentica e inicia a sessão.
+- `GET /api/auth/me` — consulta a sessão e renova o token quando necessário.
+- `POST /api/auth/logout` — encerra a sessão.
+
+Sem as variáveis de ambiente, a API responde `503 LOGIN_NAO_CONFIGURADO`; o sistema não simula um login conectado.
 
 ## Desenvolvimento
 ```bash
@@ -21,29 +43,3 @@ npm install
 npm run dev
 npm run build
 ```
-
-
-## Autenticação GRECIA PAY
-
-O projeto inclui endpoints de cadastro, login, consulta de sessão e logout usando Supabase Auth. As senhas são gerenciadas pelo Supabase Auth; o site não armazena senhas em texto puro.
-
-### Configuração obrigatória antes de usar o login
-
-1. Crie ou conecte um projeto Supabase para a GRECIA PAY.
-2. No painel do projeto, copie a Project URL e a chave publicável (anon/public).
-3. Cadastre estas variáveis no ambiente de servidor/Secrets do deploy:
-   - `SUPABASE_URL`
-   - `SUPABASE_ANON_KEY`
-4. Habilite Email/Password em Authentication → Providers e configure a confirmação de e-mail conforme a política da operação.
-5. Faça novo deploy após salvar os Secrets.
-
-**Não coloque chaves privadas ou `service_role` no navegador nem no GitHub.** O backend usa cookies `HttpOnly`, `Secure` e `SameSite=Lax` para manter a sessão.
-
-### Endpoints
-
-- `POST /api/auth/register` — cria uma conta.
-- `POST /api/auth/login` — autentica e inicia a sessão.
-- `GET /api/auth/me` — consulta a sessão e renova o token quando necessário.
-- `POST /api/auth/logout` — encerra a sessão.
-
-Sem as duas variáveis de ambiente, a API responde `503 LOGIN_NAO_CONFIGURADO`; isso evita simular um login que não está conectado a um provedor real.
