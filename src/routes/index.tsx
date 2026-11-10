@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { api } from "../lib/api";
 import { useEffect, useState, type FormEvent } from "react";
 import { ArrowDownLeft, ArrowUpRight, Bell, ChevronRight, Clock3, Eye, EyeOff, LayoutDashboard, LockKeyhole, LogOut, Menu, ShieldCheck, UserRound, X, Landmark, FileText, AlertCircle } from "lucide-react";
 
@@ -24,10 +25,9 @@ function GreciaPay() {
 
   useEffect(() => {
     let active = true;
-    fetch("/api/auth/me", { credentials: "same-origin" })
-      .then(async response => response.ok ? response.json() : null)
-      .then(data => { if (active && data?.authenticated && data.user?.email) { setUser(data.user); setEmail(data.user.email); } })
-      .catch(() => undefined);
+    api<{ authenticated: boolean; user?: User }>("/api/auth/me")
+      .then(data => { if (active && data.authenticated && data.user?.email) { setUser(data.user); setEmail(data.user.email); } })
+      .catch(error => { if (active) setNotice(error instanceof Error ? error.message : "Não foi possível verificar a sessão."); });
     return () => { active = false; };
   }, []);
 
@@ -35,21 +35,11 @@ function GreciaPay() {
     event.preventDefault();
     setAuthBusy(true); setAuthError(""); setAuthMessage("");
     try {
-      const response = await fetch("/api/auth/" + authMode, {
-        method: "POST", credentials: "same-origin",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ name: fullName, email, password })
+      const data = await api<any>("/api/auth/" + authMode, {
+        method: "POST",
+        body: { name: fullName, email, password },
+        timeoutMs: 15000
       });
-      const contentType = response.headers.get("content-type") || "";
-      if (!contentType.includes("application/json")) {
-        const raw = await response.text().catch(() => "");
-        console.error("Auth endpoint returned non-JSON:", response.status, raw.slice(0, 300));
-        throw new Error(response.status === 404
-          ? "A rota de cadastro ainda não está disponível nesta publicação. Publique a versão mais recente do projeto e tente novamente."
-          : "O servidor de autenticação retornou uma página inesperada. Verifique a publicação e os logs do servidor.");
-      }
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.message || data.error || "Não foi possível concluir o acesso.");
       if (authMode === "register" && data.needsEmailConfirmation) {
         setAuthMessage(data.message || "Confira seu e-mail para confirmar o cadastro.");
         return;
@@ -61,7 +51,7 @@ function GreciaPay() {
   }
 
   async function logout() {
-    try { await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" }); } catch { /* sessão local será encerrada na interface */ }
+    try { await api("/api/auth/logout", { method: "POST" }); } catch (error) { setNotice(error instanceof Error ? error.message : "Falha ao encerrar sessão."); }
     setUser(null); setTab("overview"); setNotice("Você saiu da sua conta.");
   }
 
