@@ -1,24 +1,23 @@
-# L. Ribeiro Imóveis
+# GRECIA PAY
 
-Website institucional e vitrine imobiliária para a L. Ribeiro Imóveis, em Monte Sião - MG.
+Website independente para apresentação da experiência de checkout GRECIA PAY.
 
-## Informações
-- Endereço: R. do Tanque, 70 - Lj A - Centro, Monte Sião - MG, 37580-000
-- Telefone / WhatsApp: (35) 99144-1538
-- Site informado: http://www.lribeiroimoveis.imb.br/
-- [Google Maps](https://maps.google.com/?cid=4179794225959653962)
+## Sobre
+Interface premium em preto e verde, responsiva para desktop e dispositivos móveis. O projeto é independente de qualquer outra loja ou aplicação.
 
-## Recursos
-- Página inicial responsiva com identidade visual elegante.
-- Busca por categoria, finalidade e palavra-chave.
-- Catálogo demonstrativo com favoritos e modal de detalhes.
-- Contato direto e formulário de interesse integrado ao WhatsApp.
-- Seções institucionais, endereço e localização.
+## Recursos da interface
+- Landing page institucional da GRECIA PAY.
+- Apresentação de recursos, fluxo de pagamento e planos ilustrativos.
+- Demonstração interativa de checkout e revisão de pedido.
+- FAQ, contato e navegação responsiva.
+- Avisos claros de ambiente demonstrativo e processamento por gateway externo.
 
 ## Importante
-Os imóveis e as fotografias do catálogo são exemplos visuais para demonstração do layout. Não representam anúncios confirmados nem disponibilidade real. Substituir pelos imóveis, valores, metragens e fotografias autorizados pela imobiliária antes da publicação comercial.
+Esta versão contém a interface demonstrativa. Não processa pagamentos reais, não cria contas reais e não armazena transações. Para produção, configure um gateway de pagamento externo, backend seguro, autenticação, banco de dados, webhooks assinados, controles administrativos e páginas legais. O nome do gateway responsável deve ser exibido no checkout.
 
 ## Desenvolvimento
-- `npm install`
-- `npm run dev`
-- `npm run build`
+```bash
+npm install
+npm run dev
+npm run build
+```
