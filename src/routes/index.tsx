@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Instagram, MapPin, Menu, MessageCircle, Minus, Plus, Search, ShoppingBag, X, Clock3, Wine, Coffee, ShoppingBasket } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -29,6 +29,14 @@ const instagram = "https://www.instagram.com/casamontesmg/";
 const categories = ["Todos", "Queijos", "Cachaças", "Licores", "Cafeteria"];
 
 function CasaMontes() {
+  const [introOpen, setIntroOpen] = useState(true);
+  useEffect(() => {
+    try { if (sessionStorage.getItem("cm-intro-seen") === "yes") setIntroOpen(false); } catch {}
+  }, []);
+  const closeIntro = () => {
+    setIntroOpen(false);
+    try { sessionStorage.setItem("cm-intro-seen", "yes"); } catch {}
+  };
   const [category, setCategory] = useState("Todos");
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState<Record<number, number>>({});
