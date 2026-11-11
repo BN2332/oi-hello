@@ -1,12 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import {
   ArrowDown, ArrowRight, ArrowUpRight, Check, ChevronDown, Code2, Layers3,
   Menu, MessageCircle, MonitorSmartphone, MousePointer2, PanelsTopLeft,
   ShieldCheck, ShoppingBag, Sparkles, Workflow, X, Zap
 } from "lucide-react";
-
-export const Route = createFileRoute("/")({ component: GreciaDevs });
 
 const DISCORD = "https://discord.gg/v4xuaSJyRj";
 
@@ -213,3 +210,5 @@ function GreciaDevs() {
     </main>
   );
 }
+
+export default GreciaDevs;
