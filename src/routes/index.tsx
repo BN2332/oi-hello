@@ -202,7 +202,7 @@ function GreciaDevs() {
                     <div className="browser-content">
                       <div className="mock-nav">
                         <b>{i === 0 ? "NØRTH" : i === 1 ? "ATELIER" : "PULSE"}</b>
-                        <span>MENU　 ABOUT　 ↗</span>
+                        <span>MENU  ABOUT  ↗</span>
                       </div>
                       <div className="mock-hero">
                         <small>{p.type}</small>
