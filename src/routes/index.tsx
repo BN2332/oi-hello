@@ -91,15 +91,15 @@ function ViviFortesSite() {
         <div className="wrap">
           <div className="vivi-section-head"><div><div className="vivi-eyebrow">UM CUIDADO PARA CADA MOMENTO <span>✳</span></div><h2>Pequenos detalhes.<br/><em>Uma grande diferença.</em></h2></div><p>Escolha seu momento de cuidado. Para consultar valores, duração e disponibilidade, é só chamar pelo WhatsApp.</p></div>
           <div className="vivi-service-grid">{services.map((s) => <article className="vivi-service-card" key={s.number}><div className="vivi-service-top"><span>{s.number}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><a href={wa(`Olá, Vivi! Gostaria de saber mais sobre ${s.title}, valores e horários disponíveis.`)} target="_blank" rel="noreferrer">Consultar serviço <ArrowUpRight size={14}/></a></article>)}</div>
-          <div className="vivi-service-foot"><Sparkles size={17}/><span>Atendimento para mulheres, homens e crianças, com atenção especial a cada pessoa.</span></div>
+          <div className="vivi-service-foot"><Sparkles size={17}/><span>Um atendimento pensado com cuidado, capricho e atenção aos detalhes.</span></div>
         </div>
       </section>
 
       <section className="vivi-gallery section-vivi" id="galeria">
         <div className="wrap">
-          <div className="vivi-gallery-head"><div className="vivi-eyebrow">INSPIRAÇÃO PARA VOCÊ <span>✳</span></div><h2>Seu estilo, <em>suas unhas.</em></h2><p>Um pouquinho do universo de beleza que inspira cada cuidado.</p></div>
+          <div className="vivi-gallery-head"><div className="vivi-eyebrow">INSPIRAÇÃO PARA VOCÊ <span>✳</span></div><h2>Seu estilo, <em>suas unhas.</em></h2><p>Referências de beleza para inspirar seu próximo momento de cuidado.</p></div>
           <div className="vivi-gallery-grid">{gallery.map((item, i) => <figure className={i === 1 ? "vivi-gallery-item tall" : "vivi-gallery-item"} key={item.src}><img src={item.src} alt={item.alt}/><figcaption><span>0{i+1}</span>{item.label}</figcaption></figure>)}</div>
-          <p className="vivi-gallery-note">Imagens ilustrativas para esta apresentação. As fotos dos trabalhos da profissional podem ser adicionadas à galeria.</p>
+          <p className="vivi-gallery-note">Imagens de referência para esta apresentação — não são fotos de trabalhos da Vivi. A galeria poderá receber fotos próprias quando estiverem disponíveis.</p>
         </div>
       </section>
 
@@ -128,7 +128,7 @@ function ViviFortesSite() {
             <div className="vivi-location-info">
               <div className="vivi-info-line"><span><MapPin/></span><div><small>ENDEREÇO</small><p>{ADDRESS}</p><a href={MAPS} target="_blank" rel="noreferrer">Ver rota no Google Maps <ArrowUpRight size={13}/></a></div></div>
               <div className="vivi-info-line"><span><Phone/></span><div><small>TELEFONE / WHATSAPP</small><p>(35) 98865-6454</p><a href={wa("Olá, Vivi! Encontrei seu site e gostaria de tirar uma dúvida.")} target="_blank" rel="noreferrer">Chamar no WhatsApp <ArrowUpRight size={13}/></a></div></div>
-              <div className="vivi-info-line"><span><Clock3/></span><div><small>HORÁRIOS INFORMADOS</small><p>Segunda a sexta: 08h às 22h<br/>Sábado: 08h às 18h</p><small className="vivi-hours-note">Consulte a disponibilidade antes de ir. Horários sujeitos a alteração.</small></div></div>
+              <div className="vivi-info-line"><span><Clock3/></span><div><small>AGENDAMENTO</small><p>Consulte os horários disponíveis diretamente pelo WhatsApp.</p><small className="vivi-hours-note">A confirmação do dia e horário é feita pela profissional.</small></div></div>
               <a className="vivi-button vivi-directions" href={MAPS} target="_blank" rel="noreferrer">Como chegar <ArrowUpRight size={16}/></a>
             </div>
           </div>
