@@ -190,7 +190,41 @@ function GreciaDevs() {
       <section className="section-pad work" id="work">
         <div className="container">
           <div className="section-heading"><div><span className="section-index">03 / SELECTED DIRECTIONS</span><h2>Projetos com<br/><em>intenção em cada pixel.</em></h2></div><p className="muted">Estudos demonstrativos de direção visual e possibilidades de produto. São conceitos autorais, não trabalhos atribuídos a clientes reais.</p></div>
-          <div className="project-grid">{projects.map((p, i) => <article className={`project ${p.tone}`} key={p.name}><div className="project-visual"><div className="browser"><div className="browser-bar"><i/><i/><i/><span>preview / ${p.name.toLowerCase().replaceAll(" ", "-")}</span></div><div className="browser-content"><div className="mock-nav"><b>{i === 0 ? "NØRTH" : i === 1 ? "ATELIER" : "PULSE"}</b><span>MENU　 ABOUT　 ↗</span></div><div className="mock-hero"><small>{p.type}</small><strong>{i === 0 ? "Objects for a better everyday." : i === 1 ? "A different point of view." : "Clarity for every decision."}</strong><div className="mock-cta"/></div><div className="mock-blocks"><i/><i/><i/></div></div></div><span className="project-number">0{i + 1}</span></div><div className="project-info"><div><span>{p.type}</span><h3>{p.name}</h3><p>{p.desc}</p></div><span className="project-tag">{p.label}</span></div></article>)}</div>
+          <div className="project-grid">
+            {projects.map((p, i) => (
+              <article className={`project ${p.tone}`} key={p.name}>
+                <div className="project-visual">
+                  <div className="browser">
+                    <div className="browser-bar">
+                      <i /><i /><i />
+                      <span>preview / {p.name.toLowerCase().replaceAll(" ", "-")}</span>
+                    </div>
+                    <div className="browser-content">
+                      <div className="mock-nav">
+                        <b>{i === 0 ? "NØRTH" : i === 1 ? "ATELIER" : "PULSE"}</b>
+                        <span>MENU　 ABOUT　 ↗</span>
+                      </div>
+                      <div className="mock-hero">
+                        <small>{p.type}</small>
+                        <strong>{i === 0 ? "Objects for a better everyday." : i === 1 ? "A different point of view." : "Clarity for every decision."}</strong>
+                        <div className="mock-cta" />
+                      </div>
+                      <div className="mock-blocks"><i /><i /><i /></div>
+                    </div>
+                  </div>
+                  <span className="project-number">0{i + 1}</span>
+                </div>
+                <div className="project-info">
+                  <div>
+                    <span>{p.type}</span>
+                    <h3>{p.name}</h3>
+                    <p>{p.desc}</p>
+                  </div>
+                  <span className="project-tag">{p.label}</span>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -203,9 +237,31 @@ function GreciaDevs() {
 
       <section className="principles section-pad"><div className="container principles-layout"><div><span className="section-index">05 / OUR PRINCIPLES</span><h2>Feito para funcionar.<br/><em>Desenhado para durar.</em></h2></div><div className="principle-grid"><div><ShieldCheck/><h3>Confiabilidade</h3><p>Estrutura organizada, validação e atenção aos pontos críticos da experiência.</p></div><div><Zap/><h3>Performance</h3><p>Interfaces eficientes, recursos otimizados e carregamento consciente.</p></div><div><MonitorSmartphone/><h3>Adaptação real</h3><p>Uma experiência consistente em celular, tablet e computador.</p></div><div><Workflow/><h3>Evolução</h3><p>Decisões técnicas que facilitam manutenção e novas funcionalidades.</p></div></div></div></section>
 
-      <section className="contact section-pad" id="contact"><div className="container contact-layout"><div className="contact-copy"><span className="section-index">06 / START A PROJECT</span><h2>Tem uma ideia?<br/><em>Vamos dar forma a ela.</em></h2><p className="muted">Conte o que você está imaginando. Vamos entender o desafio e conversar sobre o melhor caminho para transformar sua ideia em um produto digital.</p><a className="contact-discord" href={DISCORD} target="_blank" rel="noreferrer"><MessageCircle size={18}/> Atendimento pelo Discord <ArrowUpRight size={15}/></a><span className="contact-note">Resposta e escopo são alinhados diretamente no atendimento.</span></div>
-          <form className="brief-form" onSubmit={submitBrief}><div className="form-heading"><span>PROJECT BRIEF / 001</span><span>Vamos começar</span></div><label>Seu nome<input required minLength={2} value={form.name} onChange={e => setForm({...form, name:e.target.value})} placeholder="Como podemos chamar você?"/></label><div className="form-row"><label>E-mail<input required type="email" value={form.email} onChange={e => setForm({...form, email:e.target.value})} placeholder="voce@email.com"/></label><label>WhatsApp <small>opcional</small><input value={form.whatsapp} onChange={e => setForm({...form, whatsapp:e.target.value})} placeholder="(00) 00000-0000"/></label></div><label>Tipo de projeto<select value={form.kind} onChange={e => setForm({...form,kind:e.target.value})}><option>Website profissional</option><option>Loja virtual</option><option>Landing page</option><option>Sistema personalizado</option><option>Painel administrativo</option><option>Catálogo digital</option><option>Outro projeto</option></select></label><label>Conte um pouco sobre sua ideia<textarea required minLength={12} rows={4} value={form.details} onChange={e => setForm({...form,details:e.target.value})} placeholder="Qual problema precisamos resolver? O que você gostaria de construir?"/></label><label>Faixa de investimento <small>opcional</small><select value={form.budget} onChange={e => setForm({...form,budget:e.target.value})}><option value="">Prefiro conversar</option><option>Até R$ 500</option><option>R$ 500 – R$ 1.500</option><option>R$ 1.500 – R$ 3.000</option><option>Acima de R$ 3.000</option></select></label><button className="button form-submit" type="submit">Preparar solicitação <ArrowUpRight size={16}/></button>{sent && <p className="form-success"><Check size={16}/> Brief copiado. O Discord foi aberto; cole a mensagem no atendimento para enviar sua solicitação.</p>}<p className="form-privacy">Ao continuar, seus dados serão usados apenas para preparar esta solicitação de contato.</p></form>
-        </div></div></section>
+      <section className="contact section-pad" id="contact">
+        <div className="container contact-layout">
+          <div className="contact-copy">
+            <span className="section-index">06 / START A PROJECT</span>
+            <h2>Tem uma ideia?<br /><em>Vamos dar forma a ela.</em></h2>
+            <p className="muted">Conte o que você está imaginando. Vamos entender o desafio e conversar sobre o melhor caminho para transformar sua ideia em um produto digital.</p>
+            <a className="contact-discord" href={DISCORD} target="_blank" rel="noreferrer"><MessageCircle size={18} /> Atendimento pelo Discord <ArrowUpRight size={15} /></a>
+            <span className="contact-note">Resposta e escopo são alinhados diretamente no atendimento.</span>
+          </div>
+          <form className="brief-form" onSubmit={submitBrief}>
+            <div className="form-heading"><span>PROJECT BRIEF / 001</span><span>Vamos começar</span></div>
+            <label>Seu nome<input required minLength={2} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Como podemos chamar você?" /></label>
+            <div className="form-row">
+              <label>E-mail<input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="voce@email.com" /></label>
+              <label>WhatsApp <small>opcional</small><input value={form.whatsapp} onChange={e => setForm({ ...form, whatsapp: e.target.value })} placeholder="(00) 00000-0000" /></label>
+            </div>
+            <label>Tipo de projeto<select value={form.kind} onChange={e => setForm({ ...form, kind: e.target.value })}><option>Website profissional</option><option>Loja virtual</option><option>Landing page</option><option>Sistema personalizado</option><option>Painel administrativo</option><option>Catálogo digital</option><option>Outro projeto</option></select></label>
+            <label>Conte um pouco sobre sua ideia<textarea required minLength={12} rows={4} value={form.details} onChange={e => setForm({ ...form, details: e.target.value })} placeholder="Qual problema precisamos resolver? O que você gostaria de construir?" /></label>
+            <label>Faixa de investimento <small>opcional</small><select value={form.budget} onChange={e => setForm({ ...form, budget: e.target.value })}><option value="">Prefiro conversar</option><option>Até R$ 500</option><option>R$ 500 – R$ 1.500</option><option>R$ 1.500 – R$ 3.000</option><option>Acima de R$ 3.000</option></select></label>
+            <button className="button form-submit" type="submit">Preparar solicitação <ArrowUpRight size={16} /></button>
+            {sent && <p className="form-success"><Check size={16} /> Brief copiado. O Discord foi aberto; cole a mensagem no atendimento para enviar sua solicitação.</p>}
+            <p className="form-privacy">Ao continuar, seus dados serão usados apenas para preparar esta solicitação de contato.</p>
+          </form>
+        </div>
+      </section>
 
       <footer className="footer"><div className="container"><div className="footer-main"><a className="brand" href="#top"><span className="brand-icon"><Code2 size={21}/></span><span className="brand-name">GRECIA <b>DEVs</b><small>DIGITAL ENGINEERING STUDIO</small></span></a><p>Transformamos ideias em experiências digitais.</p><a href={DISCORD} target="_blank" rel="noreferrer">Discord <ArrowUpRight size={14}/></a></div><div className="footer-bottom"><span>© {new Date().getFullYear()} GRECIA DEVs. Todos os direitos reservados.</span><a href="#top">VOLTAR AO TOPO ↑</a><span>DESIGNED WITH INTENTION.</span></div></div></footer>
     </main>
