@@ -28,75 +28,34 @@ function SpectralIntro({ onFinish }: { onFinish: () => void }) {
     const canvas = document.getElementById("spectral-field") as HTMLCanvasElement | null;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
-    let frame = 0;
-    let raf = 0;
-    let width = 0;
-    let height = 0;
+    let raf = 0, width = 0, height = 0, frame = 0;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const particles = Array.from({ length: reduced ? 35 : 150 }, (_, i) => ({
-      x: Math.random(), y: Math.random(), z: Math.random(),
-      size: Math.random() * 1.8 + .3, phase: Math.random() * 7,
-      target: i / (reduced ? 35 : 150),
-    }));
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      width = window.innerWidth; height = window.innerHeight;
-      canvas.width = width * dpr; canvas.height = height * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-    resize();
-    const draw = () => {
-      frame += 1;
-      ctx.clearRect(0, 0, width, height);
-      const t = frame * (reduced ? 0 : .009);
-      for (const p of particles) {
-        const x = p.x * width + Math.sin(t + p.phase) * 15;
-        const y = ((p.y * height - frame * (p.z + .12) * .22) % height + height) % height;
-        const alpha = .16 + (Math.sin(t * 1.7 + p.phase) + 1) * .2;
-        ctx.beginPath(); ctx.fillStyle = `rgba(77,151,255,${alpha})`;
-        ctx.shadowBlur = 12; ctx.shadowColor = "#287bff";
-        ctx.arc(x, y, p.size, 0, Math.PI * 2); ctx.fill();
-      }
-      ctx.shadowBlur = 0;
-      raf = requestAnimationFrame(draw);
-    };
-    draw();
-    window.addEventListener("resize", resize);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
-  }, []);
-
-  return (
-    <div className="intro" role="dialog" aria-label="Apresentação GRECIA DEVs">
-      <canvas id="spectral-field" className="intro-canvas" />
-      <div className="intro-vignette" />
-      <div className="intro-creature" aria-hidden="true">
-        <svg viewBox="0 0 620 310" className="specter" fill="none">
-          <defs>
-            <linearGradient id="spirit" x1="60" y1="35" x2="540" y2="280" gradientUnits="userSpaceOnUse"><stop stopColor="#d4edff"/><stop offset=".38" stopColor="#4d9dff"/><stop offset="1" stopColor="#1550d6"/></linearGradient>
-            <filter id="glow"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          </defs>
-          <g filter="url(#glow)" stroke="url(#spirit)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M91 151 Q126 91 211 103 L279 77 Q336 65 385 98 L442 91 L488 54 L496 111 Q535 130 548 166 L514 187 Q478 190 451 169 L399 185 Q365 204 331 193 L285 219 L270 277 L245 282 L250 218 L205 209 L170 267 L145 265 L163 193 Q116 183 91 151Z" fill="#1c6de8" fillOpacity=".13"/>
-            <path d="M119 145 Q175 117 227 131 Q292 100 365 125 Q420 146 455 135" strokeWidth="3"/>
-            <path d="M271 210 Q292 235 278 279 M365 191 Q391 223 383 276" strokeWidth="8"/>
-            <path d="M250 278 L235 287 M383 276 L402 286 M145 263 L129 274" strokeWidth="6"/>
-            <path d="M468 125 L494 113 L520 139" strokeWidth="4"/>
-            <path d="M481 144 L498 148" stroke="#d9f3ff" strokeWidth="7"/>
-            <path d="M90 151 Q52 143 28 111 Q55 171 94 181" strokeWidth="6"/>
-          </g>
-          <path d="M490 145 L506 149" stroke="#dff7ff" strokeWidth="5" filter="url(#glow)"/>
-        </svg>
-      </div>
-      <div className="intro-brand">
-        <div className="intro-mark"><Code2 size={23}/></div>
-        <div className="intro-word">GRECIA <span>DEVs</span></div>
-        <p>TRANSFORMAMOS IDEIAS EM EXPERIÊNCIAS DIGITAIS.</p>
-      </div>
-      <div className="intro-bottom"><span>ENGINEERING · DESIGN · EXPERIENCE</span><button onClick={onFinish}>PULAR INTRO <ArrowUpRight size={13}/></button></div>
-    </div>
-  );
+    const shapes = [
+      { name:"body", points:[[92,126],[135,91],[220,78],[315,83],[384,111],[424,145],[392,183],[321,202],[226,196],[151,177],[105,157]] },
+      { name:"neck", points:[[350,105],[389,79],[435,62],[470,75],[488,105],[463,143],[422,160],[388,145]] },
+      { name:"head", points:[[445,76],[475,49],[491,20],[506,48],[533,59],[557,76],[548,94],[514,101],[486,119],[463,105]] },
+      { name:"tail", points:[[115,127],[83,113],[52,91],[28,61],[43,105],[64,139],[102,158]] },
+      { name:"frontA", points:[[385,143],[416,151],[420,196],[445,232],[435,245],[406,224],[391,187]] },
+      { name:"frontB", points:[[355,160],[382,170],[371,205],[383,244],[367,254],[344,222],[340,187]] },
+      { name:"backA", points:[[168,158],[203,169],[187,211],[165,246],[143,244],[151,210]] },
+      { name:"backB", points:[[220,169],[252,175],[248,213],[267,244],[250,256],[222,226],[207,192]] }
+    ];
+    const inside=(x:number,y:number,poly:number[][])=>{let hit=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if(((a[1]>y)!==(b[1]>y))&&(x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0]))hit=!hit;}return hit;};
+    const dots:{x:number;y:number;size:number;phase:number;group:string;shade:number}[]=[];
+    const count=reduced?500:3200;let attempts=0;
+    while(dots.length<count&&attempts<count*35){attempts++;const shape=shapes[Math.floor(Math.random()*shapes.length)];const xs=shape.points.map(p=>p[0]),ys=shape.points.map(p=>p[1]);const x=Math.random()*(Math.max(...xs)-Math.min(...xs))+Math.min(...xs);const y=Math.random()*(Math.max(...ys)-Math.min(...ys))+Math.min(...ys);if(inside(x,y,shape.points))dots.push({x,y,size:Math.random()*2.15+.55,phase:Math.random()*Math.PI*2,group:shape.name,shade:Math.random()});}
+    const resize=()=>{const dpr=Math.min(window.devicePixelRatio||1,1.6);width=window.innerWidth;height=window.innerHeight;canvas.width=width*dpr;canvas.height=height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);};resize();
+    const rotate=(x:number,y:number,cx:number,cy:number,a:number)=>{const dx=x-cx,dy=y-cy,co=Math.cos(a),si=Math.sin(a);return{x:cx+dx*co-dy*si,y:cy+dx*si+dy*co};};
+    const draw=()=>{frame++;ctx.clearRect(0,0,width,height);const elapsed=frame;const scale=Math.min(width/760,1.22);const animalWidth=590*scale,animalHeight=270*scale;const progress=reduced?.5:Math.min(1,Math.max(0,(elapsed-15)/390));const x=-animalWidth+(width+animalWidth*2)*progress;const y=height*.48-animalHeight*.48;const fade=progress>.78?Math.max(.08,1-(progress-.78)/.22):1;const walk=Math.sin(elapsed*.075);const angles:Record<string,number>={frontA:walk*.34,frontB:-walk*.34,backA:-walk*.3,backB:walk*.3};
+      ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);
+      for(const p of dots){let px=p.x,py=p.y;const angle=angles[p.group];if(angle!==undefined){const pivot=p.group.startsWith("front")?{x:p.group==="frontA"?399:356,y:165}:{x:p.group==="backA"?177:231,y:177};const moved=rotate(px,py,pivot.x,pivot.y,angle);px=moved.x;py=moved.y;}const shimmer=.48+.42*Math.sin(elapsed*.055+p.phase);const alpha=shimmer*fade;ctx.beginPath();ctx.fillStyle=p.shade>.84?"rgba(205,237,255,"+alpha+")":"rgba(54,139,255,"+alpha+")";ctx.shadowColor=p.shade>.84?"#b8e5ff":"#1674ff";ctx.shadowBlur=p.shade>.84?18:11;ctx.arc(px,py,p.size*(.82+shimmer*.45),0,Math.PI*2);ctx.fill();}
+      ctx.restore();ctx.shadowBlur=0;
+      for(let i=0;i<95;i++){const drift=(i*37+elapsed*2.1)%210;const yy=height*.48+Math.sin(i*2.1+elapsed*.025)*animalHeight*.34;const xx=x+animalWidth*.28-drift*scale;const alpha=(1-drift/210)*.48*fade;ctx.beginPath();ctx.fillStyle="rgba(73,157,255,"+alpha+")";ctx.shadowColor="#267dff";ctx.shadowBlur=13;ctx.arc(xx,yy,1.2,0,Math.PI*2);ctx.fill();}
+      ctx.shadowBlur=0;raf=requestAnimationFrame(draw);};
+    draw();window.addEventListener("resize",resize);return()=>{cancelAnimationFrame(raf);window.removeEventListener("resize",resize);};
+  },[]);
+  return <div className="intro" role="dialog" aria-label="Apresentação GRECIA DEVs"><canvas id="spectral-field" className="intro-canvas"/><div className="intro-vignette"/><div className="intro-brand"><div className="intro-mark"><Code2 size={23}/></div><div className="intro-word">GRECIA <span>DEVs</span></div><p>TRANSFORMAMOS IDEIAS EM EXPERIÊNCIAS DIGITAIS.</p></div><div className="intro-bottom"><span>ENGINEERING · DESIGN · EXPERIENCE</span><button onClick={onFinish}>PULAR INTRO <ArrowUpRight size={13}/></button></div></div>;
 }
-
 function GreciaDevs() {
   const [intro, setIntro] = useState(false);
   const [menu, setMenu] = useState(false);
