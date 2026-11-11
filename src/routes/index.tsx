@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import "../vivi.css";
 import { useState, type FormEvent } from "react";
 import { ArrowRight, ArrowUpRight, CalendarDays, Check, ChevronDown, Clock3, Heart, MapPin, Menu, MessageCircle, Phone, Sparkles, Star, X } from "lucide-react";
 
