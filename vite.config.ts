@@ -1,19 +1,3 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: 5173,
-    strictPort: true,
-  },
-  preview: {
-    port: 4173,
-    strictPort: true,
-  },
-  build: {
-    target: "es2020",
-    cssCodeSplit: true,
-    sourcemap: false,
-  },
-});
+export default defineConfig({});
