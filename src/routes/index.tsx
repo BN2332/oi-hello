@@ -1,3 +1,4 @@
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import {
   ArrowDown, ArrowRight, ArrowUpRight, Check, ChevronDown, Code2, Layers3,
@@ -211,4 +212,4 @@ function GreciaDevs() {
   );
 }
 
-export default GreciaDevs;
+export const Route = createFileRoute("/")({ component: GreciaDevs });
