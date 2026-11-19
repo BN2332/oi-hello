@@ -52,7 +52,7 @@ function ClownGate() {
       </div>
       <div className="cg-clean-art" aria-label="Símbolo da Clown Gate">
         <div className="cg-clean-orbit orbit-one" /><div className="cg-clean-orbit orbit-two" />
-        <div className="cg-clean-emblem"><img src="/clown-gate.svg" alt="Clown Gate" /></div>
+        <div className="cg-clean-emblem"><img src="/clown-mascot.svg" alt="Mascote palhaço da Clown Gate" /></div>
         <span className="cg-art-tag tag-top"><i /> PIX PAYMENT</span>
         <span className="cg-art-tag tag-bottom">CLOWN GATE <b> / 01</b></span>
         <div className="cg-art-spark spark-one">✳</div><div className="cg-art-spark spark-two">✦</div>
