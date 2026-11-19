@@ -20,7 +20,7 @@ function constantTimeEqual(received: string, expected: string) {
 }
 
 export function requireApiAccess(request: Request) {
-  const expected = process.env.CLOWNGATE_API_SECRET;
+  const expected = process.env["CLOWNGATE_API_SECRET"];
   if (!expected) {
     throw new ClownGateError(503, "API_NOT_CONFIGURED", "A API privada ainda não foi configurada.");
   }
@@ -33,8 +33,8 @@ export function requireApiAccess(request: Request) {
 }
 
 function databaseConfig() {
-  const url = process.env.SUPABASE_URL?.replace(/\/$/, "");
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = process.env["SUPABASE_URL"]?.replace(/\/$/, "");
+  const key = process.env["SUPABASE_SERVICE_ROLE_KEY"];
   if (!url || !key) {
     throw new ClownGateError(503, "DATABASE_NOT_CONFIGURED", "O banco de dados ainda não foi configurado.");
   }
@@ -69,13 +69,13 @@ async function databaseRequest<T = unknown>(path: string, init: RequestInit = {}
 }
 
 function asaasBaseUrl() {
-  return process.env.ASAAS_ENV === "production"
+  return process.env["ASAAS_ENV"] === "production"
     ? "https://api.asaas.com/v3"
     : "https://api-sandbox.asaas.com/v3";
 }
 
 async function asaasRequest<T = JsonObject>(path: string, init: RequestInit = {}): Promise<T> {
-  const apiKey = process.env.ASAAS_API_KEY;
+  const apiKey = process.env["ASAAS_API_KEY"];
   if (!apiKey) {
     throw new ClownGateError(503, "PAYMENT_PROVIDER_NOT_CONFIGURED", "A integração PIX ainda não foi configurada.");
   }
@@ -201,14 +201,14 @@ export async function createPixCharge(request: Request) {
     throw new ClownGateError(400, "IDEMPOTENCY_KEY_REQUIRED", "Envie Idempotency-Key com 8 a 80 caracteres válidos.");
   }
 
-  const name = typeof body.customerName === "string" ? body.customerName.trim() : "";
-  const cpfCnpj = typeof body.customerCpfCnpj === "string" ? body.customerCpfCnpj : "";
-  const email = typeof body.customerEmail === "string" ? body.customerEmail : undefined;
-  const phone = typeof body.customerPhone === "string" ? body.customerPhone : undefined;
-  const amountCents = body.amountCents;
-  const description = typeof body.description === "string" ? body.description.trim().slice(0, 100) : "Pagamento Clown Gate";
+  const name = typeof body["customerName"] === "string" ? body["customerName"].trim() : "";
+  const cpfCnpj = typeof body["customerCpfCnpj"] === "string" ? body["customerCpfCnpj"] : "";
+  const email = typeof body["customerEmail"] === "string" ? body["customerEmail"] : undefined;
+  const phone = typeof body["customerPhone"] === "string" ? body["customerPhone"] : undefined;
+  const amountCents = body["amountCents"];
+  const description = typeof body["description"] === "string" ? body["description"].trim().slice(0, 100) : "Pagamento Clown Gate";
 
-  const maxAmountCents = Number(process.env.MAX_PIX_AMOUNT_CENTS ?? 1000000);
+  const maxAmountCents = Number(process.env["MAX_PIX_AMOUNT_CENTS"] ?? 1000000);
   if (name.length < 2 || name.length > 120 || !validDocument(cpfCnpj)) {
     throw new ClownGateError(400, "INVALID_CUSTOMER", "Informe nome e CPF/CNPJ válido do pagador.");
   }
@@ -244,7 +244,7 @@ export async function createPixCharge(request: Request) {
     throw new ClownGateError(409, "IDEMPOTENCY_IN_PROGRESS", "Esta chave já está em processamento. Consulte o status antes de reenviar.");
   }
 
-  const customer = await getOrCreateAsaasCustomer({ name, cpfCnpj, email, phone });
+  const customer = await getOrCreateAsaasCustomer({ name, cpfCnpj, ...(email ? { email } : {}), ...(phone ? { phone } : {}) });
   const externalReference = `clowngate-${idempotencyKey}`;
   let localPaymentId = "";
   try {
@@ -339,7 +339,7 @@ export async function getPayment(paymentId: string, request: Request) {
 }
 
 export async function receiveAsaasWebhook(request: Request) {
-  const expected = process.env.ASAAS_WEBHOOK_TOKEN;
+  const expected = process.env["ASAAS_WEBHOOK_TOKEN"];
   if (!expected) throw new ClownGateError(503, "WEBHOOK_NOT_CONFIGURED", "Webhook ainda não configurado.");
   const received = request.headers.get("asaas-access-token") ?? "";
   if (!received || !constantTimeEqual(received, expected)) {
@@ -352,11 +352,11 @@ export async function receiveAsaasWebhook(request: Request) {
   } catch {
     throw new ClownGateError(400, "INVALID_JSON", "Payload JSON inválido.");
   }
-  const eventId = typeof body.id === "string" ? body.id : "";
-  const eventType = typeof body.event === "string" ? body.event : "";
-  const payment = body.payment && typeof body.payment === "object" ? body.payment as JsonObject : {};
-  const providerPaymentId = typeof payment.id === "string" ? payment.id : "";
-  const providerStatus = typeof payment.status === "string" ? payment.status : eventType;
+  const eventId = typeof body["id"] === "string" ? body["id"] : "";
+  const eventType = typeof body["event"] === "string" ? body["event"] : "";
+  const payment = body["payment"] && typeof body["payment"] === "object" ? body["payment"] as JsonObject : {};
+  const providerPaymentId = typeof payment["id"] === "string" ? payment["id"] : "";
+  const providerStatus = typeof payment["status"] === "string" ? payment["status"] : eventType;
 
   if (!eventId || eventId.length > 120 || !eventType || eventType.length > 120) {
     throw new ClownGateError(400, "INVALID_WEBHOOK", "Evento sem identificador ou tipo válido.");
