@@ -34,6 +34,7 @@ Referências oficiais:
 5. Configure as variáveis no ambiente do servidor:
    - `SUPABASE_URL`
    - `SUPABASE_SERVICE_ROLE_KEY`
+   - `CUSTOMER_HASH_SECRET` (at least 32 random characters; keep it stable)
    - `CLOWNGATE_API_SECRET`
    - `ASAAS_API_KEY`
    - `ASAAS_WEBHOOK_TOKEN`
@@ -60,7 +61,7 @@ Body:
 ```json
 {
   "customerName": "Cliente de teste",
-  "customerCpfCnpj": "12345678909",
+  "customerCpfCnpj": "52998224725",
   "customerEmail": "cliente@example.com",
   "customerPhone": "11999999999",
   "amountCents": 4990,
