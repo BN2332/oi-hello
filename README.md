@@ -1,44 +1,38 @@
-# Navalha 27 — site demonstrativo de barbearia
+# Clown Gate
 
-Projeto de apresentação criado para a Bryan Digital Studio. A marca, endereço, contatos, profissionais, preços e horários são fictícios e servem exclusivamente para demonstrar a experiência ao potencial cliente.
+Plataforma de pagamentos com identidade visual Dark Carnival, focada inicialmente em cobranças PIX.
 
-## O que está incluído
+## Stack
+- React 19 + TypeScript
+- TanStack Start / Router
+- Vite
+- Asaas API (Sandbox por padrão)
+- Supabase Postgres via REST para persistência
 
-- Página premium responsiva com identidade visual carvão, off-white e dourado envelhecido.
-- Catálogo de serviços com duração e preço demonstrativos.
-- Cartões de barbeiros fictícios.
-- Fluxo de agendamento em cinco etapas.
-- Cálculo de duração e valor, seleção de profissional, data e horário.
-- Bloqueio de conflitos entre reservas armazenadas neste navegador.
-- Tela de sucesso com código, resumo e link para WhatsApp demonstrativo.
-- Painel local do proprietário em `#admin`, com PIN demonstrativo `2026`, lista por dia, concluir/cancelar e exportação CSV.
-- Avisos explícitos de que o conteúdo e os agendamentos são simulados.
-
-## Rodar localmente
-
-Requisitos: Node.js 20 ou superior.
+## Começar localmente
+Requisitos: Bun (ou Node.js compatível).
 
 ```bash
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
-Abra http://localhost:3000.
+## Configuração do backend
+1. Copie `.env.clown-gate.example` para o ambiente local (não commite segredos).
+2. Crie um projeto Supabase e execute a migration em `supabase/migrations/`.
+3. Configure uma chave de API do Asaas Sandbox.
+4. Preencha as variáveis privadas no ambiente do servidor.
+5. Consulte `docs/CLOWN_GATE_IMPLEMENTATION.md` para instruções, API e webhook.
 
-Para gerar o build:
-```bash
-npm run build
-npm run start
-```
+## Rotas
+- `GET /api/health` — readiness sem dados secretos.
+- `POST /api/payments/pix` — cria cobrança PIX (API privada).
+- `GET /api/payments/{id}` — consulta cobrança (API privada).
+- `POST /api/webhooks/asaas` — recebe e persiste eventos autenticados.
 
-## Personalização
+## Situação e limites
+A interface pública inclui uma prévia de dashboard marcada como demonstrativa. A API inicial cria cobranças na conta Asaas configurada. Ainda não há autenticação de usuários, contas individuais de vendedores, saldo de sellers, split, saques, liquidação para terceiros, nem painel administrativo de produção.
 
-Edite o objeto `CONFIG` no início de `src/routes/index.tsx`. Substitua nome, slogan, cidade, endereço, WhatsApp, Instagram, horários, serviços, preços, barbeiros e regras de agenda pelos dados reais do estabelecimento.
+Para funcionar como plataforma de pagamentos para múltiplos vendedores, é necessário validar e contratar o modelo adequado com o provedor. O Asaas exige alinhamento prévio e implantação formal para BaaS; criar subcontas por API não habilita esse modelo automaticamente.
 
-Altere também o texto dos avisos de demonstração somente quando a aplicação estiver conectada a um backend real e os dados tiverem sido validados com o proprietário.
-
-## Limitações da demonstração
-
-Os agendamentos são guardados em `localStorage`, portanto existem apenas no navegador e dispositivo em que foram criados. Não há bloqueio compartilhado entre clientes, autenticação real do painel, envio de notificações, confirmação real por WhatsApp, integração de pagamento ou banco de dados. O PIN `2026` é público e não deve ser usado em produção.
-
-Antes de utilizar comercialmente, implemente uma API com persistência compartilhada, autenticação segura para administração, validação no servidor, proteção contra reservas simultâneas e substitua todos os dados fictícios pelos dados oficiais.
+**Não use em produção antes de homologação, configuração dos segredos, validação jurídica/regulatória e revisão de segurança.** O Sandbox deve ser usado durante o desenvolvimento.
