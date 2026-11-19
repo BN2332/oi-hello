@@ -231,7 +231,7 @@ export async function createPixCharge(request: Request) {
   }
   if (description.length < 2) throw new ClownGateError(400, "INVALID_DESCRIPTION", "Informe uma descrição válida.");
 
-  const documentHash = hashCustomerDocument(cpfCnpj.replace(/\\D/g, ""));
+  const documentHash = hashCustomerDocument(cpfCnpj.replace(/\D/g, ""));
   const previous = await databaseRequest<Array<{
     id: string;
     asaas_payment_id: string | null;
