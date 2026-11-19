@@ -189,6 +189,8 @@ async function getPixQrCode(paymentId: string) {
 
 export async function createPixCharge(request: Request) {
   requireApiAccess(request);
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (contentLength > 16_384) throw new ClownGateError(413, "PAYLOAD_TOO_LARGE", "Payload excede o limite permitido.");
   let body: JsonObject;
   try {
     body = await request.json() as JsonObject;
@@ -346,6 +348,8 @@ export async function getPayment(paymentId: string, request: Request) {
 }
 
 export async function receiveAsaasWebhook(request: Request) {
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (contentLength > 131_072) throw new ClownGateError(413, "PAYLOAD_TOO_LARGE", "Webhook excede o limite permitido.");
   const expected = process.env["ASAAS_WEBHOOK_TOKEN"];
   if (!expected) throw new ClownGateError(503, "WEBHOOK_NOT_CONFIGURED", "Webhook ainda não configurado.");
   const received = request.headers.get("asaas-access-token") ?? "";
@@ -369,6 +373,20 @@ export async function receiveAsaasWebhook(request: Request) {
     throw new ClownGateError(400, "INVALID_WEBHOOK", "Evento sem identificador ou tipo válido.");
   }
 
+  const safePayload = {
+    id: eventId,
+    event: eventType,
+    dateCreated: typeof body["dateCreated"] === "string" ? body["dateCreated"] : null,
+    payment: {
+      id: providerPaymentId || null,
+      status: typeof payment["status"] === "string" ? payment["status"] : null,
+      value: typeof payment["value"] === "number" ? payment["value"] : null,
+      netValue: typeof payment["netValue"] === "number" ? payment["netValue"] : null,
+      externalReference: typeof payment["externalReference"] === "string" ? payment["externalReference"] : null,
+      dateCreated: typeof payment["dateCreated"] === "string" ? payment["dateCreated"] : null,
+    },
+  };
+
   try {
     await databaseRequest("cg_webhook_events", {
       method: "POST",
@@ -377,7 +395,7 @@ export async function receiveAsaasWebhook(request: Request) {
         event_id: eventId,
         event_type: eventType,
         asaas_payment_id: providerPaymentId || null,
-        payload: body,
+        payload: safePayload,
       }),
     });
   } catch (error) {
