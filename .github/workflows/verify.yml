@@ -30,15 +30,20 @@ jobs:
         run: |
           bun run start > /tmp/clown-gate-server.log 2>&1 &
           echo $! > /tmp/clown-gate-server.pid
-      - name: Wait for server and verify health endpoint
+      - name: Verify health endpoint
         run: |
-          for i in $(seq 1 60); do
-            if curl --silent --fail http://127.0.0.1:3000/api/health | grep -q '"ok":true'; then
+          for i in $(seq 1 30); do
+            code=$(curl --silent --show-error --max-time 5 -o /tmp/clown-gate-health.json -w "%{http_code}" http://127.0.0.1:3000/api/health || true)
+            if [ "$code" = "200" ]; then
+              cat /tmp/clown-gate-health.json
+              node -e 'const fs=require("fs"); const data=JSON.parse(fs.readFileSync("/tmp/clown-gate-health.json","utf8")); if(data.ok!==true) process.exit(1);'
               exit 0
             fi
             sleep 2
           done
-          cat /tmp/clown-gate-server.log
+          echo "Health endpoint did not return HTTP 200. Last status: $code"
+          cat /tmp/clown-gate-health.json || true
+          cat /tmp/clown-gate-server.log || true
           exit 1
       - name: Show server log on failure
         if: failure()
