@@ -97,7 +97,7 @@ function ClownGate() {
     </section>
 
     <section className="cg-clean-security" id="seguranca"><ShieldCheck /><div><b>Segurança desde a primeira etapa.</b><span>Credenciais protegidas e confirmação de pagamentos pelo provedor.</span></div><Check /></section>
-    <footer className="cg-clean-footer" id="ajuda"><a className="cg-clean-brand" href="#inicio"><img src="/clown-gate.svg" alt="" /><span>CLOWN<span>GATE</span><small>PAYMENT PLATFORM</small></span></a><span>© 2026 CLOWN GATE</span><a href="mailto:suporte@clowngate.com">Precisa de ajuda? <ArrowUpRight size={13} /></a></footer>
+    <footer className="cg-clean-footer" id="ajuda"><a className="cg-clean-brand" href="#inicio"><img src="/clown-gate.svg" alt="" /><span>CLOWN<span>GATE</span><small>PAYMENT PLATFORM</small></span></a><span>© 2026 CLOWN GATE</span><a href="#seguranca">Sobre a plataforma <ArrowUpRight size={13} /></a></footer>
   </main>;
 }
 
