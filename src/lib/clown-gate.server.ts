@@ -1,4 +1,4 @@
-import { createHash, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 
 export class ClownGateError extends Error {
   status: number;
@@ -12,6 +12,14 @@ export class ClownGateError extends Error {
 }
 
 type JsonObject = Record<string, unknown>;
+
+function hashCustomerDocument(document: string) {
+  const secret = process.env["CUSTOMER_HASH_SECRET"];
+  if (!secret || secret.length < 32) {
+    throw new ClownGateError(503, "HASH_SECRET_NOT_CONFIGURED", "A chave de proteção dos dados cadastrais não foi configurada.");
+  }
+  return createHmac("sha256", secret).update(document).digest("hex");
+}
 
 function constantTimeEqual(received: string, expected: string) {
   const left = Buffer.from(received);
@@ -138,7 +146,7 @@ async function getOrCreateAsaasCustomer(input: {
   phone?: string;
 }) {
   const document = input.cpfCnpj.replace(/\D/g, "");
-  const documentHash = createHash("sha256").update(document).digest("hex");
+  const documentHash = hashCustomerDocument(document);
   const existing = await databaseRequest<Array<{ asaas_customer_id: string }>>(
     `cg_customers?cpf_cnpj_hash=eq.${documentHash}&select=asaas_customer_id&limit=1`,
   );
@@ -223,7 +231,7 @@ export async function createPixCharge(request: Request) {
   }
   if (description.length < 2) throw new ClownGateError(400, "INVALID_DESCRIPTION", "Informe uma descrição válida.");
 
-  const documentHash = createHash("sha256").update(cpfCnpj.replace(/\\D/g, "")).digest("hex");
+  const documentHash = hashCustomerDocument(cpfCnpj.replace(/\\D/g, ""));
   const previous = await databaseRequest<Array<{
     id: string;
     asaas_payment_id: string | null;
