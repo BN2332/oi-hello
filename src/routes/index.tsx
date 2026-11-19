@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-  Activity, ArrowDownLeft, ArrowRight, ArrowUpRight, BadgeCheck, Banknote,
-  Check, ChevronDown, CircleHelp, Code2, Copy, CreditCard, Fingerprint,
-  Gauge, LockKeyhole, Menu, QrCode, ShieldCheck, Sparkles, Wallet, X, Zap,
+  Activity, ArrowDownLeft, ArrowRight, ArrowUpRight, BadgeCheck,
+  Check, ChevronDown, Code2, Fingerprint, Gauge, LockKeyhole, Menu,
+  QrCode, ShieldCheck, Sparkles, Wallet, X,
 } from "lucide-react";
 import "./clown-gate.css";
 
@@ -17,14 +17,8 @@ function ClownGate() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("Visão geral");
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
-  const [copied, setCopied] = useState(false);
-  const [demoAmount, setDemoAmount] = useState("49,90");
   const [demoNotice, setDemoNotice] = useState("");
   const nav = ["Plataforma", "Como funciona", "Desenvolvedores", "Segurança"];
-  const copyDemo = async () => {
-    try { await navigator.clipboard.writeText("00020101021226890014br.gov.bcb.pix..."); setCopied(true); }
-    catch { setCopied(false); }
-  };
   return <main className="cg">
     <div className="cg-topline"><span><i /> INFRAESTRUTURA DE PAGAMENTOS PIX</span><span>FEITA PARA NEGÓCIOS QUE NÃO PARAM</span></div>
     <header className="cg-header"><div className="cg-wrap cg-nav">
