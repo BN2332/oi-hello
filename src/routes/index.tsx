@@ -1,77 +1,104 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-  Activity, ArrowDownLeft, ArrowRight, ArrowUpRight, BadgeCheck,
-  Check, ChevronDown, Code2, Fingerprint, Gauge, LockKeyhole, Menu,
+  ArrowDownLeft, ArrowRight, ArrowUpRight, Check, ChevronRight,
+  CircleHelp, CreditCard, LayoutDashboard, LockKeyhole, Menu,
   QrCode, ShieldCheck, Sparkles, Wallet, X,
 } from "lucide-react";
 import "./clown-gate.css";
 
-const transactions = [
-  { id: "CG-20481", customer: "Marina Costa", amount: "R$ 189,90", status: "Aprovado", time: "Hoje, 14:32" },
-  { id: "CG-20480", customer: "Lucas Almeida", amount: "R$ 79,00", status: "Pendente", time: "Hoje, 14:18" },
-  { id: "CG-20479", customer: "Ana Ribeiro", amount: "R$ 249,90", status: "Aprovado", time: "Hoje, 13:54" },
+const demoTransactions = [
+  { name: "Marina Costa", id: "CG-20481", amount: "R$ 189,90", status: "Aprovado" },
+  { name: "Lucas Almeida", id: "CG-20480", amount: "R$ 79,00", status: "Pendente" },
+  { name: "Ana Ribeiro", id: "CG-20479", amount: "R$ 249,90", status: "Aprovado" },
 ];
 
 function ClownGate() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("Visão geral");
-  const [faqOpen, setFaqOpen] = useState<number | null>(0);
-  const [demoNotice, setDemoNotice] = useState("");
-  const nav = ["Plataforma", "Como funciona", "Desenvolvedores", "Segurança"];
-  return <main className="cg">
-    <div className="cg-topline"><span><i /> INFRAESTRUTURA DE PAGAMENTOS PIX</span><span>FEITA PARA NEGÓCIOS QUE NÃO PARAM</span></div>
-    <header className="cg-header"><div className="cg-wrap cg-nav">
-      <a className="cg-brand" href="#inicio" aria-label="Clown Gate início"><span className="cg-brand-mark">C<span>.</span></span><span>CLOWN GATE<small>PAYMENT INFRASTRUCTURE</small></span></a>
-      <button className="cg-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="Abrir menu">{menuOpen ? <X/> : <Menu/>}</button>
-      <nav className={menuOpen ? "cg-links open" : "cg-links"}>{nav.map(n => <a key={n} href={n === "Plataforma" ? "#plataforma" : n === "Como funciona" ? "#fluxo" : n === "Desenvolvedores" ? "#devs" : "#seguranca"} onClick={() => setMenuOpen(false)}>{n}</a>)}</nav>
-      <div className="cg-nav-actions"><a className="cg-login" href="#contato">Entrar</a><a className="cg-button cg-button-small" href="#contato">Criar conta <ArrowUpRight size={15}/></a></div>
-    </div></header>
+  const [menuOpen, setMenuOpen] = useState(false);
+  const tabs = [
+    { label: "Visão geral", icon: <LayoutDashboard /> },
+    { label: "Transações", icon: <CreditCard /> },
+    { label: "Cobranças PIX", icon: <QrCode /> },
+    { label: "Financeiro", icon: <Wallet /> },
+  ];
 
-    <section className="cg-hero" id="inicio"><div className="cg-grid-bg"/><div className="cg-wrap cg-hero-layout">
-      <div className="cg-hero-copy"><div className="cg-eyebrow"><i/> PAGAMENTOS SEM COMPLICAÇÃO <span>•</span> PIX</div>
-        <h1>Seu negócio.<br/>Seu ritmo.<br/><em>Seu próximo nível.</em></h1>
-        <p>Uma experiência de pagamentos pensada para simplificar cobranças, acompanhar transações e dar mais clareza à operação do seu negócio.</p>
-        <div className="cg-hero-actions"><a className="cg-button" href="#contato">Conhecer a plataforma <ArrowRight size={17}/></a><a className="cg-text-link" href="#plataforma">Explorar recursos <ArrowUpRight size={16}/></a></div>
-        <div className="cg-trust-row"><span><ShieldCheck/> Segurança em primeiro lugar</span><span><Activity/> Visibilidade da operação</span></div>
+  return <main className="cg cg-clean">
+    <header className="cg-clean-header">
+      <a className="cg-clean-brand" href="#inicio" aria-label="Clown Gate início">
+        <img src="/clown-gate.svg" alt="" />
+        <span>CLOWN<span>GATE</span><small>PAYMENT PLATFORM</small></span>
+      </a>
+      <button className="cg-clean-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="Abrir menu">{menuOpen ? <X /> : <Menu />}</button>
+      <nav className={menuOpen ? "cg-clean-nav is-open" : "cg-clean-nav"}>
+        <a href="#vantagens" onClick={() => setMenuOpen(false)}>A plataforma</a>
+        <a href="#seguranca" onClick={() => setMenuOpen(false)}>Segurança</a>
+        <a href="#ajuda" onClick={() => setMenuOpen(false)}>Ajuda</a>
+      </nav>
+      <a className="cg-clean-login" href="#gate">Acessar <ArrowUpRight size={15} /></a>
+    </header>
+
+    <section className="cg-clean-hero" id="inicio">
+      <div className="cg-clean-glow" />
+      <div className="cg-clean-copy">
+        <div className="cg-clean-overline"><i /> SUA NOVA CENTRAL DE PAGAMENTOS</div>
+        <h1>Pagamentos no<br /><em>seu controle.</em></h1>
+        <p>Uma forma mais simples de receber, acompanhar e organizar suas cobranças PIX.</p>
+        <div className="cg-clean-actions">
+          <a className="cg-clean-primary" href="#gate">Entrar na Gate <ArrowRight size={17} /></a>
+          <a className="cg-clean-secondary" href="#vantagens">Conhecer a plataforma <ChevronRight size={16} /></a>
+        </div>
+        <div className="cg-clean-proof"><span><ShieldCheck /> Ambiente protegido</span><span><QrCode /> Foco em PIX</span></div>
       </div>
-      <div className="cg-visual"><div className="cg-halo cg-halo-a"/><div className="cg-halo cg-halo-b"/><div className="cg-orbit-dot"/><div className="cg-gate-card">
-        <div className="cg-gate-head"><span className="cg-mini-mark">C.</span><span>CLown gate <small>PAYMENT CORE</small></span><b>LIVE PREVIEW</b></div>
-        <div className="cg-gate-label">VOLUME PROCESSADO <span>VISUAL DEMONSTRATIVO</span></div><div className="cg-gate-value">R$ 28.490<span>,00</span></div>
-        <div className="cg-gate-chart"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div>
-        <div className="cg-gate-foot"><span><b/> PIX</span><span>PAINEL ILUSTRATIVO</span></div>
-      </div><div className="cg-float cg-float-top"><span><QrCode/></span><div><b>PIX</b><small>Cobranças simplificadas</small></div></div><div className="cg-float cg-float-bottom"><span><ShieldCheck/></span><div><b>Controle e clareza</b><small>Dados em um só lugar</small></div></div><div className="cg-visual-caption">A PORTA PARA UMA NOVA OPERAÇÃO<span> / 001</span></div></div>
-    </div><div className="cg-wrap cg-hero-bottom"><span>PIX COMO MÉTODO INICIAL</span><i/><span>PAINEL PARA VENDEDORES</span><i/><span>API PARA INTEGRAÇÕES</span></div></section>
-
-    <section className="cg-strip"><div className="cg-wrap cg-strip-grid"><div><span>01</span><b>Uma visão clara</b><small>Acompanhe a operação em um painel.</small></div><div><span>02</span><b>Fluxos organizados</b><small>Tenha cobranças e eventos centralizados.</small></div><div><span>03</span><b>Pronto para integrar</b><small>Arquitetura pensada para desenvolvedores.</small></div></div></section>
-
-    <section className="cg-section" id="plataforma"><div className="cg-wrap"><div className="cg-section-head"><div><div className="cg-kicker">01 / PLATAFORMA</div><h2>O essencial para<br/><em>operar com confiança.</em></h2></div><p>Ferramentas para organizar o ciclo de cobrança, entender resultados e acompanhar cada etapa da operação.</p></div>
-      <div className="cg-feature-grid">
-        <article className="cg-feature cg-feature-large"><div className="cg-feature-icon"><Gauge/></div><span className="cg-feature-number">01 — VISÃO GERAL</span><h3>Seu negócio em<br/>uma única tela.</h3><p>Indicadores, movimentações recentes e atalhos para as tarefas mais importantes do dia.</p><div className="cg-mini-dashboard"><div><small>VOLUME DO PERÍODO</small><b>R$ 12.840,00</b><span>EXEMPLO VISUAL</span></div><div className="cg-mini-bars">{[28,42,36,64,48,78,58,90,70,100,76,88].map((h,i)=><i key={i} style={{height:h+"%"}}/>)}</div></div></article>
-        <article className="cg-feature"><div className="cg-feature-icon"><QrCode/></div><span className="cg-feature-number">02 — COBRANÇAS PIX</span><h3>Cobrar deve<br/>ser simples.</h3><p>Fluxo de criação de cobranças com QR Code e código copia e cola, conectado ao provedor habilitado.</p><div className="cg-feature-illustration cg-qr-illustration"><QrCode/><span>PIX</span></div></article>
-        <article className="cg-feature"><div className="cg-feature-icon"><Wallet/></div><span className="cg-feature-number">03 — FINANCEIRO</span><h3>Movimentações<br/>sob controle.</h3><p>Estrutura prevista para extrato, conciliação e histórico rastreável após a integração do backend.</p><div className="cg-ledger"><span><ArrowDownLeft/> Entrada registrada</span><b>+ R$ 240,00</b><span><ArrowUpRight/> Tarifa da operação</span><b>− R$ 2,40</b></div></article>
-        <article className="cg-feature"><div className="cg-feature-icon"><Code2/></div><span className="cg-feature-number">04 — DESENVOLVEDORES</span><h3>Integre no seu<br/>próprio fluxo.</h3><p>API privada inicial e recepção de webhooks autenticados, com documentação técnica para integração.</p><div className="cg-code-preview"><span>POST</span> /v1/payments<br/><i>{"{ \"method\": \"pix\" }"}</i></div></article>
-        <article className="cg-feature"><div className="cg-feature-icon"><Fingerprint/></div><span className="cg-feature-number">05 — CONTROLE DE ACESSO</span><h3>Permissões<br/>bem definidas.</h3><p>Controles de acesso por perfil e trilhas de auditoria previstos para a etapa de autenticação.</p><div className="cg-access-tags"><span>MERCHANT</span><span>ADMIN</span><span>API KEY</span></div></article>
+      <div className="cg-clean-art" aria-label="Símbolo da Clown Gate">
+        <div className="cg-clean-orbit orbit-one" /><div className="cg-clean-orbit orbit-two" />
+        <div className="cg-clean-emblem"><img src="/clown-gate.svg" alt="Clown Gate" /></div>
+        <span className="cg-art-tag tag-top"><i /> PIX PAYMENT</span>
+        <span className="cg-art-tag tag-bottom">CLOWN GATE <b> / 01</b></span>
+        <div className="cg-art-spark spark-one">✳</div><div className="cg-art-spark spark-two">✦</div>
       </div>
-    </div></section>
+      <div className="cg-clean-bottom"><span>CLAREZA EM CADA COBRANÇA</span><i /><span>CONTROLE EM UM SÓ LUGAR</span><i /><span>FEITO PARA CRESCER</span></div>
+    </section>
 
-    <section className="cg-demo-section"><div className="cg-wrap cg-demo-layout"><div><div className="cg-kicker">02 / EXPERIÊNCIA</div><h2>Uma operação<br/><em>fácil de entender.</em></h2><p>Veja uma prévia ilustrativa da interface. Os dados abaixo são exemplos visuais e não representam pagamentos ou saldos reais.</p><div className="cg-demo-legend"><span><i/> Interface demonstrativa</span><span><LockKeyhole/> Sem movimentação financeira</span></div></div>
-      <div className="cg-dashboard"><aside className="cg-dash-side"><div className="cg-dash-brand"><b>C.</b> CLOWN GATE</div>{["Visão geral","Transações","Cobranças PIX","Financeiro","Integrações"].map((t,i)=><button key={t} className={activeTab===t?"selected":""} onClick={()=>setActiveTab(t)}>{[<Gauge/>,<Activity/>,<QrCode/>,<Wallet/>,<Code2/>][i]}{t}</button>)}<div className="cg-dash-profile"><span>CG</span><div><b>Conta demonstração</b><small>AMBIENTE DE PRÉVIA</small></div></div></aside>
-      <div className="cg-dash-main"><div className="cg-dash-top"><div><small>PAINEL / {activeTab.toUpperCase()}</small><h3>{activeTab}</h3></div><span className="cg-demo-pill"><i/> DEMO</span></div>
-        {activeTab==="Visão geral" ? <><div className="cg-dash-metrics"><div><small>VOLUME DO MÊS</small><b>R$ 8.420,00</b><span>Exemplo ilustrativo</span></div><div><small>COBRANÇAS</small><b>128</b><span>Exemplo ilustrativo</span></div><div><small>APROVAÇÃO</small><b>96,4%</b><span>Exemplo ilustrativo</span></div></div><div className="cg-dash-panel"><div className="cg-panel-title"><b>Atividade recente</b><small>AMOSTRA FICTÍCIA</small></div>{transactions.map(t=><div className="cg-transaction" key={t.id}><span className="cg-tx-icon"><ArrowDownLeft/></span><div><b>{t.customer}</b><small>{t.id} · {t.time}</small></div><strong>{t.amount}</strong><em className={t.status==="Aprovado"?"approved":"pending"}>{t.status}</em></div>)}</div></> : <div className="cg-dash-panel cg-tab-panel"><div className="cg-panel-title"><b>{activeTab}</b><small>PRÉVIA INTERATIVA</small></div><p>{activeTab==="Transações"?"Consulte registros, status e detalhes das cobranças.":activeTab==="Cobranças PIX"?"Prepare o fluxo de cobrança PIX para o provedor conectado.":activeTab==="Financeiro"?"Visualize extratos e lançamentos conciliados.":"Gerencie chaves de API e destinos de webhook."}</p><div className="cg-empty-state"><Sparkles/><b>Módulo de demonstração</b><span>A integração operacional será habilitada após configuração do backend e do provedor.</span></div></div>}
-      </div></div>
-    </div></section>
+    <section className="cg-clean-benefits" id="vantagens">
+      <article><span>01</span><QrCode /><h3>Cobranças PIX</h3><p>Crie cobranças com QR Code e código copia e cola.</p></article>
+      <article><span>02</span><LayoutDashboard /><h3>Visão organizada</h3><p>Acompanhe a atividade da sua operação em um só lugar.</p></article>
+      <article><span>03</span><LockKeyhole /><h3>Integração segura</h3><p>Conexões protegidas e eventos validados pelo provedor.</p></article>
+    </section>
 
-    <section className="cg-section" id="fluxo"><div className="cg-wrap"><div className="cg-section-head"><div><div className="cg-kicker">03 / COMO FUNCIONA</div><h2>Da primeira cobrança<br/><em>ao acompanhamento.</em></h2></div><p>Uma jornada direta, com etapas claras para vendedores e equipes técnicas.</p></div><div className="cg-steps">{[{n:"01",t:"Crie sua conta",d:"Cadastre seu negócio e envie as informações necessárias para análise."},{n:"02",t:"Configure a integração",d:"Conecte o provedor de pagamentos após validação e habilitação da conta."},{n:"03",t:"Gere cobranças PIX",d:"Crie cobranças e apresente o QR Code ou código copia e cola ao pagador."},{n:"04",t:"Acompanhe os eventos",d:"Consulte status confirmados pelo provedor e acompanhe o histórico."}].map(s=><article key={s.n}><span>{s.n}</span><div><h3>{s.t}</h3><p>{s.d}</p></div><ArrowUpRight/></article>)}</div></div></section>
+    <section className="cg-gate-access" id="gate">
+      <div className="cg-gate-intro">
+        <div className="cg-clean-overline"><i /> ÁREA DE ACESSO</div>
+        <h2>Bem-vindo à<br /><em>Clown Gate.</em></h2>
+        <p>Entre na experiência da plataforma e conheça o painel.</p>
+        <div className="cg-demo-label"><Sparkles size={14} /> PRÉVIA INTERATIVA</div>
+      </div>
+      <div className="cg-clean-dashboard">
+        <aside className="cg-clean-sidebar">
+          <div className="cg-sidebar-brand"><img src="/clown-gate.svg" alt="" /><b>CLOWN GATE</b></div>
+          {tabs.map(tab => <button key={tab.label} className={activeTab === tab.label ? "active" : ""} onClick={() => setActiveTab(tab.label)}>{tab.icon}{tab.label}</button>)}
+          <div className="cg-sidebar-status"><i /> AMBIENTE DEMO</div>
+        </aside>
+        <div className="cg-clean-dash-content">
+          <div className="cg-clean-dash-head"><div><small>PAINEL / {activeTab.toUpperCase()}</small><h3>{activeTab}</h3></div><span className="cg-demo-badge">DEMONSTRAÇÃO</span></div>
+          {activeTab === "Visão geral" ? <>
+            <div className="cg-clean-stats">
+              <article><small>VOLUME ILUSTRATIVO</small><b>R$ 8.420,00</b><span>Dados fictícios</span></article>
+              <article><small>COBRANÇAS</small><b>128</b><span>Dados fictícios</span></article>
+              <article><small>STATUS</small><b className="cg-status-ready">Em prévia</b><span>Ambiente demonstrativo</span></article>
+            </div>
+            <div className="cg-clean-activity"><div className="cg-activity-title"><b>Atividade recente</b><small>EXEMPLOS FICTÍCIOS</small></div>
+              {demoTransactions.map(tx => <div className="cg-clean-tx" key={tx.id}><span className="cg-tx-symbol"><ArrowDownLeft /></span><div><b>{tx.name}</b><small>{tx.id}</small></div><strong>{tx.amount}</strong><em className={tx.status === "Aprovado" ? "ok" : "wait"}>{tx.status}</em></div>)}
+            </div>
+          </> : <div className="cg-clean-empty"><CircleHelp /><b>{activeTab}</b><p>Esta área é uma prévia visual. A operação real será liberada após a configuração de acesso e do provedor de pagamentos.</p></div>}
+          <div className="cg-clean-notice"><LockKeyhole size={13} /> Esta é uma demonstração. Nenhum pagamento real é processado nesta tela.</div>
+        </div>
+      </div>
+    </section>
 
-    <section className="cg-security" id="seguranca"><div className="cg-wrap cg-security-layout"><div><div className="cg-kicker">04 / SEGURANÇA E CONFIANÇA</div><h2>Confiança não é<br/><em>um detalhe.</em></h2><p>A plataforma é planejada com controles de acesso, registros de auditoria e confirmação de pagamentos baseada em eventos validados do provedor.</p><a className="cg-text-link" href="#contato">Fale com a equipe <ArrowUpRight/></a></div><div className="cg-security-list"><div><ShieldCheck/><span><b>Eventos verificados</b><small>Webhooks validados e processamento idempotente.</small></span><Check/></div><div><LockKeyhole/><span><b>Dados protegidos</b><small>Segredos fora do navegador e controle de permissões.</small></span><Check/></div><div><Fingerprint/><span><b>Rastreabilidade</b><small>Trilhas de auditoria para operações sensíveis.</small></span><Check/></div><div><BadgeCheck/><span><b>Operação responsável</b><small>Ativação real condicionada à homologação e autorização.</small></span><Check/></div></div></div></section>
-
-    <section className="cg-section cg-devs" id="devs"><div className="cg-wrap cg-dev-layout"><div><div className="cg-kicker">05 / PARA DESENVOLVEDORES</div><h2>Uma integração<br/><em>que respeita seu stack.</em></h2><p>Estrutura preparada para API REST, chaves com escopos, webhooks assinados, idempotência e documentação OpenAPI.</p><a className="cg-button" href="#contato">Solicitar acesso técnico <ArrowRight/></a></div><div className="cg-code-window"><div className="cg-code-head"><span><i/><i/><i/></span><b>create-payment.ts</b><small>EXEMPLO CONCEITUAL</small></div><pre><code><span className="code-purple">const</span> payment = <span className="code-purple">await</span> clownGate.payments.create({"{"}<br/>  amount: <span className="code-green">4990</span>,<br/>  currency: <span className="code-string">"BRL"</span>,<br/>  method: <span className="code-string">"pix"</span>,<br/>  reference: <span className="code-string">"pedido-123"</span>,<br/>{"}"});<br/><br/><span className="code-muted">// Contrato ilustrativo — API ainda não ativa</span><br/><span className="code-purple">return</span> payment;</code></pre><div className="cg-code-foot"><span><i/> EXEMPLO NÃO EXECUTÁVEL</span><span>API / V1</span></div></div></div></section>
-
-    <section className="cg-faq"><div className="cg-wrap cg-faq-layout"><div><div className="cg-kicker">06 / DÚVIDAS FREQUENTES</div><h2>Antes de<br/><em>começar.</em></h2><p>Informações importantes sobre a plataforma e sua disponibilidade.</p></div><div className="cg-faq-list">{[{q:"A Clown Gate já processa pagamentos reais?",a:"Ainda não. Esta versão apresenta a experiência e a estrutura inicial do produto. O processamento real depende da implementação do backend, integração oficial, credenciais, homologação e autorização operacional."},{q:"Quais métodos de pagamento estarão disponíveis?",a:"O primeiro método planejado é PIX. Outros meios não fazem parte do escopo inicial."},{q:"Qual provedor será utilizado?",a:"O Asaas foi selecionado como primeiro provedor. A integração inicial utiliza o Sandbox e uma única conta; operações com vendedores independentes exigem aprovação e implantação formal do modelo BaaS pelo provedor."},{q:"Qualquer pessoa pode criar uma conta?",a:"O cadastro será público, mas contas precisarão passar por análise e aprovação antes de processar pagamentos reais."}].map((f,i)=><article key={f.q} className={faqOpen===i?"active":""}><button onClick={()=>setFaqOpen(faqOpen===i?null:i)}><span>{f.q}</span>{faqOpen===i?<X/>:<ChevronDown/>}</button>{faqOpen===i&&<p>{f.a}</p>}</article>)}</div></div></section>
-
-    <section className="cg-contact" id="contato"><div className="cg-wrap cg-contact-inner"><div className="cg-kicker">07 / PRÓXIMO PASSO</div><h2>Vamos abrir<br/><em>novas possibilidades.</em></h2><p>Quer acompanhar o desenvolvimento ou conversar sobre uma futura integração?</p><form className="cg-contact-form" onSubmit={e=>{e.preventDefault();setDemoNotice("Solicitação preparada. Configure um serviço de backend ou canal de atendimento para receber mensagens.");}}><input required placeholder="Seu e-mail" type="email" aria-label="Seu e-mail"/><button className="cg-button" type="submit">Tenho interesse <ArrowRight/></button></form>{demoNotice&&<p className="cg-notice" role="status">{demoNotice}</p>}<small className="cg-contact-note">Formulário demonstrativo: nenhum dado é enviado ou armazenado nesta versão.</small></div></section>
-    <footer className="cg-footer"><div className="cg-wrap cg-footer-main"><a className="cg-brand" href="#inicio"><span className="cg-brand-mark">C<span>.</span></span><span>CLOWN GATE<small>PAYMENT INFRASTRUCTURE</small></span></a><p>A porta para uma operação mais clara.</p><div><a href="#plataforma">Plataforma</a><a href="#seguranca">Segurança</a><a href="#devs">Desenvolvedores</a></div></div><div className="cg-wrap cg-footer-bottom"><span>© {new Date().getFullYear()} CLOWN GATE. TODOS OS DIREITOS RESERVADOS.</span><span>PIX · INFRAESTRUTURA EM DESENVOLVIMENTO</span></div></footer>
+    <section className="cg-clean-security" id="seguranca"><ShieldCheck /><div><b>Segurança desde a primeira etapa.</b><span>Credenciais protegidas e confirmação de pagamentos pelo provedor.</span></div><Check /></section>
+    <footer className="cg-clean-footer" id="ajuda"><a className="cg-clean-brand" href="#inicio"><img src="/clown-gate.svg" alt="" /><span>CLOWN<span>GATE</span><small>PAYMENT PLATFORM</small></span></a><span>© 2026 CLOWN GATE</span><a href="mailto:suporte@clowngate.com">Precisa de ajuda? <ArrowUpRight size={13} /></a></footer>
   </main>;
 }
+
 export const Route = createFileRoute("/")({ component: ClownGate });
