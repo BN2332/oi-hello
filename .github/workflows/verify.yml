@@ -28,7 +28,7 @@ jobs:
         run: bun run build
       - name: Start production preview
         run: |
-          bun run start > /tmp/clown-gate-server.log 2>&1 &
+          bun run dev > /tmp/clown-gate-server.log 2>&1 &
           echo $! > /tmp/clown-gate-server.pid
       - name: Verify health endpoint
         run: |
