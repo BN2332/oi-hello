@@ -1,7 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Clown Gate">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f04a62"/><stop offset="1" stop-color="#a80e2b"/></linearGradient></defs>
-  <rect x="3" y="3" width="90" height="90" rx="27" fill="#100b0e" stroke="#6c1b2d" stroke-width="2"/>
-  <path d="M62 25c-4-4-9-6-15-6-17 0-28 12-28 29s11 29 28 29c7 0 13-3 17-8L52 58c-2 3-4 4-7 4-6 0-10-5-10-14s4-14 10-14c3 0 5 1 7 4z" fill="url(#g)"/>
-  <path d="M58 23l6-9 5 12z" fill="#f4d9dc"/><circle cx="69" cy="67" r="7" fill="#f4d9dc"/>
-  <path d="M68 37l9 4-8 6" fill="none" stroke="#f04a62" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Clown Gate — mascote palhaço">
+<defs>
+ <radialGradient id="bg" cx="48%" cy="35%" r="72%"><stop stop-color="#3b1018"/><stop offset=".58" stop-color="#160b10"/><stop offset="1" stop-color="#080709"/></radialGradient>
+ <linearGradient id="hair" x2="1" y2="1"><stop stop-color="#ff3348"/><stop offset=".55" stop-color="#9e071d"/><stop offset="1" stop-color="#350711"/></linearGradient>
+ <linearGradient id="face" x2=".2" y2="1"><stop stop-color="#fff6e9"/><stop offset=".55" stop-color="#d8c7bd"/><stop offset="1" stop-color="#75636a"/></linearGradient>
+ <linearGradient id="red" x2="0" y2="1"><stop stop-color="#ff4657"/><stop offset="1" stop-color="#8d061d"/></linearGradient>
+ <filter id="shadow"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+<rect x="12" y="12" width="488" height="488" rx="76" fill="#050506" stroke="#8d1a2b" stroke-width="7"/>
+<rect x="24" y="24" width="464" height="464" rx="65" fill="url(#bg)"/>
+<path d="M95 205Q43 110 105 69Q164 38 181 126Q224 43 256 44Q292 44 327 128Q367 37 420 77Q476 121 409 222L430 320Q367 395 256 396Q139 394 79 321Z" fill="url(#hair)" stroke="#510715" stroke-width="10"/>
+<path d="M105 176Q67 113 112 94Q142 85 158 150L177 205Z M407 174Q447 110 403 93Q373 85 354 151L335 205Z" fill="#ed233b" stroke="#670a1b" stroke-width="8"/>
+<path d="M151 142Q256 98 361 144L389 261Q383 354 256 382Q130 354 123 261Z" fill="url(#face)" stroke="#342128" stroke-width="10"/>
+<path d="M143 198Q183 142 235 191Q196 236 151 230Z" fill="#100a0d"/>
+<path d="M369 198Q329 142 277 191Q316 236 361 230Z" fill="#100a0d"/>
+<path d="M157 193L224 211L170 225Z M355 193L288 211L342 225Z" fill="#fff2e8"/>
+<path d="M181 193L208 204L182 214Z M331 193L304 204L330 214Z" fill="#ff1739"/>
+<path d="M246 211Q256 190 266 211L280 265Q256 286 232 265Z" fill="url(#red)" stroke="#8b1024" stroke-width="6"/>
+<path d="M117 165L196 178L159 211L119 205Z M395 165L316 178L353 211L393 205Z" fill="#e31b37"/>
+<path d="M154 279Q256 245 358 279Q346 354 256 358Q166 354 154 279Z" fill="#26070e" stroke="#7b1021" stroke-width="8"/>
+<path d="M163 282Q256 304 349 282L332 310Q256 328 180 310Z" fill="#fff0e6"/>
+<path d="M181 310L205 313L208 337Q189 329 181 310Z M220 316L244 318L244 344L224 339Z M268 318L292 316L288 341L268 344Z M307 313L331 310Q323 330 304 337Z" fill="#d7c4bb"/>
+<path d="M155 272Q256 234 357 272" fill="none" stroke="#090609" stroke-width="13" stroke-linecap="round"/>
+<path d="M122 245L87 224L116 280 M390 245L425 224L396 280" fill="none" stroke="#ff334b" stroke-width="13" stroke-linecap="round"/>
+<circle cx="256" cy="258" r="24" fill="#e51c39" stroke="#ff7784" stroke-width="5"/>
+<path d="M256 236Q270 248 256 277Q242 248 256 236Z" fill="#ffb4b8" opacity=".7"/>
+<path d="M170 118L197 73L220 126 M342 118L315 73L292 126" fill="none" stroke="#ff5264" stroke-width="13" stroke-linecap="round"/>
+<path d="M190 390L256 420L322 390" fill="none" stroke="#9b1429" stroke-width="8" stroke-linecap="round"/>
+<text x="256" y="454" text-anchor="middle" font-family="Georgia,serif" font-size="39" font-weight="900" letter-spacing="3" fill="#fff1e9" stroke="#7e0b1e" stroke-width="2" paint-order="stroke">CLOWN GATE</text>
+<path d="M62 459H150M362 459H450" stroke="#df243e" stroke-width="5" stroke-linecap="round"/>
 </svg>
