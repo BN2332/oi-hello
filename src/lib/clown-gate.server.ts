@@ -208,7 +208,8 @@ export async function createPixCharge(request: Request) {
   const amountCents = body["amountCents"];
   const description = typeof body["description"] === "string" ? body["description"].trim().slice(0, 100) : "Pagamento Clown Gate";
 
-  const maxAmountCents = Number(process.env["MAX_PIX_AMOUNT_CENTS"] ?? 1000000);
+  const configuredMaxAmount = Number(process.env["MAX_PIX_AMOUNT_CENTS"] ?? 1000000);
+  const maxAmountCents = Number.isSafeInteger(configuredMaxAmount) && configuredMaxAmount >= 100 ? configuredMaxAmount : 1000000;
   if (name.length < 2 || name.length > 120 || !validDocument(cpfCnpj)) {
     throw new ClownGateError(400, "INVALID_CUSTOMER", "Informe nome e CPF/CNPJ válido do pagador.");
   }
@@ -220,16 +221,22 @@ export async function createPixCharge(request: Request) {
   }
   if (description.length < 2) throw new ClownGateError(400, "INVALID_DESCRIPTION", "Informe uma descrição válida.");
 
+  const documentHash = createHash("sha256").update(cpfCnpj.replace(/\\D/g, "")).digest("hex");
   const previous = await databaseRequest<Array<{
     id: string;
     asaas_payment_id: string | null;
     status: string;
     amount_cents: number;
+    customer_hash: string;
+    description: string;
   }>>(
-    `cg_payments?idempotency_key=eq.${encodeURIComponent(idempotencyKey)}&select=id,asaas_payment_id,status,amount_cents&limit=1`,
+    `cg_payments?idempotency_key=eq.${encodeURIComponent(idempotencyKey)}&select=id,asaas_payment_id,status,amount_cents,customer_hash,description&limit=1`,
   );
   if (previous[0]) {
     const item = previous[0];
+    if (item.amount_cents !== amountCents || item.customer_hash !== documentHash || item.description !== description) {
+      throw new ClownGateError(409, "IDEMPOTENCY_KEY_REUSED", "Esta chave de idempotência já foi usada com dados diferentes.");
+    }
     if (item.asaas_payment_id) {
       const qr = await getPixQrCode(item.asaas_payment_id);
       return {
@@ -305,7 +312,7 @@ export async function createPixCharge(request: Request) {
       reused: false,
     };
   } catch (error) {
-    if (error instanceof ClownGateError && error.code !== "PAYMENT_PROVIDER_ERROR") {
+    {
       await databaseRequest(`cg_payments?id=eq.${encodeURIComponent(localPaymentId)}`, {
         method: "PATCH",
         headers: { Prefer: "return=minimal" },
